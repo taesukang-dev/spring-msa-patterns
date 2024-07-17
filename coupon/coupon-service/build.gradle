@@ -1,0 +1,37 @@
+plugins {
+    id "com.github.davidmc24.gradle.plugin.avro" version "1.9.1"
+}
+
+group = 'com.example.coupon'
+version = '0.0.1-SNAPSHOT'
+
+dependencies {
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.16.4'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'org.springframework.kafka:spring-kafka:2.8.8'
+    implementation 'org.apache.avro:avro:1.11.3'
+
+    implementation("io.confluent:kafka-avro-serializer:7.6.1") {
+        exclude group: "org.slf4j", module: "slf4j-log4j12"
+        exclude group: "log4j", module: "log4j"
+        exclude group: "io.swagger", module: "swagger-annotations"
+        exclude group: "io.swagger", module: "swagger-core"
+    }
+}
+
+tasks.register("prepareKotlinBuildScriptModel"){}
+
+avro {
+    fieldVisibility = "PRIVATE"
+    outputCharacterEncoding = "UTF-8"
+}
+
+generateAvroJava {
+    source ("src/main/resources/avro")
+    include("*.avsc")
+    outputDir = file("src/main/java")
+}

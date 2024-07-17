@@ -1,0 +1,19 @@
+{
+  "namespace": "com.example.coupon.couponcore.infrastructure.model",
+  "type": "record",
+  "name": "CouponIssueAvroModel",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "couponId",
+      "type": "long"
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'coupon'
+
+include 'coupon-service'
