@@ -23,7 +23,6 @@ dependencies {
         exclude group: "io.swagger", module: "swagger-annotations"
         exclude group: "io.swagger", module: "swagger-core"
     }
-
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}

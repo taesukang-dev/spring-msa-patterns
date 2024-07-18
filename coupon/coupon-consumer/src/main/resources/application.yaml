@@ -13,24 +13,5 @@ spring:
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
     schema-registry:
       url: http://localhost:8081
-  h2:
-    console:
-      enabled: true
-  sql:
-    init:
-      mode: always
-  datasource:
-    hikari:
-      driver-class-name: org.h2.Driver
-      jdbc-url: jdbc:h2:mem:coupon
-      username: sa
-      password:
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-    defer-datasource-initialization: true
+server:
+  port: 8090

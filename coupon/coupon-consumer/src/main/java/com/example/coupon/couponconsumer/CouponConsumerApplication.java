@@ -1,11 +1,13 @@
-package com.example.coupon.couponcore;
+package com.example.coupon.couponconsumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = "com.example.coupon")
-public class CouponApplication {
+public class CouponConsumerApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(CouponApplication.class, args);
+        SpringApplication.run(CouponConsumerApplication.class, args);
     }
+
 }

@@ -1,3 +1,5 @@
 rootProject.name = 'coupon'
 
 include 'coupon-service'
+include 'coupon-consumer'
+include 'coupon-common'

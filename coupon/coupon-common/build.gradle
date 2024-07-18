@@ -11,11 +11,8 @@ dependencies {
     implementation 'org.redisson:redisson-spring-boot-starter:3.16.4'
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation 'org.apache.avro:avro:1.11.3'
-
-    implementation project(path: ':coupon-common')
 
     implementation("io.confluent:kafka-avro-serializer:7.6.1") {
         exclude group: "org.slf4j", module: "slf4j-log4j12"
@@ -23,7 +20,17 @@ dependencies {
         exclude group: "io.swagger", module: "swagger-annotations"
         exclude group: "io.swagger", module: "swagger-core"
     }
-
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
+
+avro {
+    fieldVisibility = "PRIVATE"
+    outputCharacterEncoding = "UTF-8"
+}
+
+generateAvroJava {
+    source ("src/main/resources/avro")
+    include("*.avsc")
+    outputDir = file("src/main/java")
+}
