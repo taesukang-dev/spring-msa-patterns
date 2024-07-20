@@ -1,11 +1,11 @@
 package com.example.coupon.couponcore.application;
 
 import com.example.coupon.couponcore.application.ports.output.CouponIssueRequestMessagePublisher;
-import com.example.coupon.couponcore.domain.Coupon;
+import com.example.coupon.couponcore.core.Coupon;
 import com.example.coupon.couponcore.application.ports.input.CouponApplicationService;
 import com.example.coupon.couponcore.application.ports.output.AtomicCouponIssueRepository;
 import com.example.coupon.couponcore.application.ports.output.CouponRepository;
-import com.example.coupon.couponcore.domain.event.CouponIssueEvent;
+import com.example.coupon.couponcore.core.event.CouponIssueEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.example.coupon.couponcore.messaging;
 
 import com.example.coupon.couponcommon.infrastructure.model.CouponIssueAvroModel;
-import com.example.coupon.couponcore.domain.event.CouponIssueEvent;
+import com.example.coupon.couponcore.core.event.CouponIssueEvent;
 import org.springframework.stereotype.Component;
 
 @Component

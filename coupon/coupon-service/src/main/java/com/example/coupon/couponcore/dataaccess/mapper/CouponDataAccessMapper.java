@@ -1,7 +1,7 @@
 package com.example.coupon.couponcore.dataaccess.mapper;
 
 import com.example.coupon.couponcore.dataaccess.entity.CouponEntity;
-import com.example.coupon.couponcore.domain.Coupon;
+import com.example.coupon.couponcore.core.Coupon;
 import org.springframework.stereotype.Component;
 
 @Component

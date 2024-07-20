@@ -1,4 +1,4 @@
-package com.example.coupon.couponcore.common;
+package com.example.coupon.couponcommon.common;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;

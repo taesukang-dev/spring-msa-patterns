@@ -1,6 +1,6 @@
 package com.example.coupon.couponcore.dataaccess.entity;
 
-import com.example.coupon.couponcore.domain.CouponType;
+import com.example.coupon.couponcore.core.CouponType;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;

@@ -2,7 +2,7 @@ package com.example.coupon.couponcore.dataaccess.adapter;
 
 import com.example.coupon.couponcore.dataaccess.mapper.CouponDataAccessMapper;
 import com.example.coupon.couponcore.dataaccess.repository.CouponJpaRepository;
-import com.example.coupon.couponcore.domain.Coupon;
+import com.example.coupon.couponcore.core.Coupon;
 import com.example.coupon.couponcore.application.ports.output.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

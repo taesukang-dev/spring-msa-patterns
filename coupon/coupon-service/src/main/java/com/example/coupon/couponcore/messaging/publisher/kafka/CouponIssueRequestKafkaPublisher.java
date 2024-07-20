@@ -2,7 +2,7 @@ package com.example.coupon.couponcore.messaging.publisher.kafka;
 
 import com.example.coupon.couponcommon.infrastructure.model.CouponIssueAvroModel;
 import com.example.coupon.couponcore.application.ports.output.CouponIssueRequestMessagePublisher;
-import com.example.coupon.couponcore.domain.event.CouponIssueEvent;
+import com.example.coupon.couponcore.core.event.CouponIssueEvent;
 import com.example.coupon.couponcore.messaging.CouponIssueMessagingMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
