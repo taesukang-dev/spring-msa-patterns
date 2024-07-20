@@ -154,6 +154,47 @@ RabbitMQ 는 지정된 수신인에게 정확이 메시징 하는 것에 초점�
 따라서 2번 (쿠폰 발급을 검증) 처리가 끝난다면 쿠폰 검증 WAS(coupon-service) 에서 쿠폰 발급 WAS(coupon-consumer) 로 Kafka Messaging 을 하게 되어 3번 (쿠폰 발급) 처리를 하게 됩니다.  
 그렇다면 한 쪽에서는 지속적으로 검증하고 한 쪽에서는 지속적으로 발급하며 쿠폰 검증/발급에 대해 WAS 간 병렬처리가 가능하게 됩니다.  
 
+- 쿠폰 발급 요청 Publish
+
+```java
+// https://github.com/taesukang-dev/spring-msa-patterns/blob/master/coupon/coupon-service/src/main/java/com/example/coupon/couponcore/messaging/publisher/kafka/CouponIssueRequestKafkaPublisher.java
+
+@Slf4j
+@RequiredArgsConstructor
+@Component
+public class CouponIssueRequestKafkaPublisher implements CouponIssueRequestMessagePublisher {
+
+    private final KafkaTemplate<String, CouponIssueAvroModel> kafkaTemplate;
+    private final CouponIssueMessagingMapper couponIssueMessagingMapper;
+
+    @Override
+    public void publish(CouponIssueEvent couponIssueEvent) {
+        kafkaTemplate.send(COUPON_ISSUE_TOPIC,
+                couponIssueMessagingMapper.couponIssueEventToAvroModel(couponIssueEvent));
+    }
+}
+```
+
+- 쿠폰 발급 요청 수신 Listener
+
+```java
+// https://github.com/taesukang-dev/spring-msa-patterns/blob/master/coupon/coupon-consumer/src/main/java/com/example/coupon/couponconsumer/messaging/listener/kafka/CouponIssueRequestKafkaListener.java
+
+@RequiredArgsConstructor
+@Component
+public class CouponIssueRequestKafkaListener {
+
+    private final IssueRequestMessageListener issueRequestMessageListener;
+    private final IssueRequestMessagingMapper mapper;
+
+    @KafkaListener(topics = COUPON_ISSUE_TOPIC, groupId = "spring")
+    public void consumer(@Payload CouponIssueAvroModel messages) {
+        issueRequestMessageListener.completeIssueRequest(
+                mapper.issueRequestAvroModelToIssueRequest(messages)
+        );
+    }
+}
+```
 
 ## 정리
 선착순 쿠폰 발급 서비스를 위한 요건에 대한 저의 답변은 다음과 같습니다.
