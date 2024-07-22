@@ -14,14 +14,9 @@ public class Stock {
     private int price;
     private int totalQuantity;
     private int availableQuantity;
-    private OrderStatus orderStatus;
+
 
     public boolean isAvailableToBuy(int quantity) {
         return availableQuantity > quantity;
-    }
-
-    public Stock updateStatus(OrderStatus status) {
-        this.orderStatus = status;
-        return this;
     }
 }

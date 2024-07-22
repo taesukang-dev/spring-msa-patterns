@@ -1,6 +1,8 @@
 package com.example.stock.stockservice.dataaccess.mapper;
 
+import com.example.stock.stockservice.core.Order;
 import com.example.stock.stockservice.core.Stock;
+import com.example.stock.stockservice.dataaccess.entity.OrderEntity;
 import com.example.stock.stockservice.dataaccess.entity.StockEntity;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +16,6 @@ public class StockDataAccessMapper {
                 .price(stockEntity.getPrice())
                 .totalQuantity(stockEntity.getTotalQuantity())
                 .availableQuantity(stockEntity.getAvailableQuantity())
-                .orderStatus(stockEntity.getOrderStatus())
                 .build();
     }
 
@@ -25,7 +26,24 @@ public class StockDataAccessMapper {
                 .price(stock.getPrice())
                 .totalQuantity(stock.getTotalQuantity())
                 .availableQuantity(stock.getAvailableQuantity())
-                .orderStatus(stock.getOrderStatus())
+                .build();
+    }
+
+    public Order orderEntityToOrder(OrderEntity order) {
+        return Order.builder()
+                .productId(order.getProductId())
+                .quantity(order.getQuantity())
+                .orderStatus(order.getOrderStatus())
+                .build();
+    }
+
+    public OrderEntity orderToOrderEntity(Order order) {
+        return OrderEntity
+                .builder()
+                .id(order.getId())
+                .productId(order.getProductId())
+                .quantity(order.getQuantity())
+                .orderStatus(order.getOrderStatus())
                 .build();
     }
 
