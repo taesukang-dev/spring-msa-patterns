@@ -12,7 +12,7 @@ public interface StockJpaRepository extends JpaRepository<StockEntity, UUID> {
     @Modifying
     @Query("UPDATE StockEntity s " +
             "SET s.availableQuantity = s.availableQuantity - :quantity " +
-            "where s.availableQuantity - :quantity >= 0 " +
-            "and s.availableQuantity = :productId")
+            "WHERE s.productId = :productId " +
+            "AND s.availableQuantity - :quantity >= 0 ")
     int decreaseQuantity(@Param("productId") UUID productId, @Param("quantity") int quantity);
 }
