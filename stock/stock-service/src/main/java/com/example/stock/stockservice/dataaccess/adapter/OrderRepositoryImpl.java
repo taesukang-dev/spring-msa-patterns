@@ -7,6 +7,8 @@ import com.example.stock.stockservice.dataaccess.repository.OrderJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Repository
 public class OrderRepositoryImpl implements OrderRepository {
@@ -21,5 +23,11 @@ public class OrderRepositoryImpl implements OrderRepository {
                         mapper.orderToOrderEntity(order)
                 )
         );
+    }
+
+    @Override
+    public Optional<Order> findById(Long id) {
+        return orderJpaRepository.findById(id)
+                .map(mapper::orderEntityToOrder);
     }
 }
