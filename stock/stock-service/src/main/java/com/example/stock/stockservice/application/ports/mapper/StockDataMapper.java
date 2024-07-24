@@ -1,19 +1,18 @@
 package com.example.stock.stockservice.application.ports.mapper;
 
 import com.example.stock.stockservice.application.ports.input.web.OrderStatusResponse;
+import com.example.coupon.common.command.StockBuyCommand;
 import com.example.stock.stockservice.core.Order;
-import com.example.stock.stockservice.core.event.StockBuyEvent;
 import com.example.stock.stockservice.core.vo.OrderStatus;
-import com.example.stock.stockservice.dataaccess.entity.OrderEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StockDataMapper {
 
-    public Order stockBuyEventToOrder(StockBuyEvent stockBuyEvent) {
+    public Order stockBuyCommandToOrder(StockBuyCommand stockBuyEvent) {
         return Order.builder()
-                .productId(stockBuyEvent.getProductId())
-                .quantity(stockBuyEvent.getQuantity())
+                .productId(stockBuyEvent.productId())
+                .quantity(stockBuyEvent.quantity())
                 .orderStatus(OrderStatus.PENDING)
                 .build();
     }

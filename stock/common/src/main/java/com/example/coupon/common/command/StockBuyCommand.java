@@ -1,4 +1,4 @@
-package com.example.stock.stockservice.application.ports.input.web;
+package com.example.coupon.common.command;
 
 import java.util.UUID;
 

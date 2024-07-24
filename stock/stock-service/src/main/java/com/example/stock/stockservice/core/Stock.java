@@ -17,6 +17,6 @@ public class Stock {
 
 
     public boolean isAvailableToBuy(int quantity) {
-        return availableQuantity > quantity;
+        return availableQuantity - quantity >= 0;
     }
 }

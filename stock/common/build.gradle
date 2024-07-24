@@ -6,24 +6,18 @@ group = 'com.example.stock'
 version = '0.0.1-SNAPSHOT'
 
 dependencies {
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
-	implementation 'org.redisson:redisson-spring-boot-starter:3.16.4'
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-
-	implementation project(path: ':common')
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.session:spring-session-data-redis'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.17.7'
 
 	implementation 'org.apache.avro:avro:1.11.3'
-
 	implementation("io.confluent:kafka-avro-serializer:7.6.1") {
 		exclude group: "org.slf4j", module: "slf4j-log4j12"
 		exclude group: "log4j", module: "log4j"
 		exclude group: "io.swagger", module: "swagger-annotations"
 		exclude group: "io.swagger", module: "swagger-core"
 	}
-
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}

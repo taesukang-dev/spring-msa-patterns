@@ -1,3 +1,4 @@
 rootProject.name = 'stock'
 
 include 'stock-service'
+include 'common'

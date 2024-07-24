@@ -13,6 +13,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Repository
 public class StockRepositoryImpl implements StockRepository {
+    private static final int ONLY_ONE_AFFECTED_ROW = 1;
 
     private final StockJpaRepository stockJpaRepository;
     private final StockDataAccessMapper mapper;
@@ -31,8 +32,9 @@ public class StockRepositoryImpl implements StockRepository {
     }
 
     @Override
+    // TODO : Optimistic Locking
     public boolean decreaseQuantity(UUID productId, int quantity) {
         return stockJpaRepository.decreaseQuantity(productId, quantity)
-                == 1;
+                == ONLY_ONE_AFFECTED_ROW;
     }
 }
