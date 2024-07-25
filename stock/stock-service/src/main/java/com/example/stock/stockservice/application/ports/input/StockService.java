@@ -1,6 +1,6 @@
 package com.example.stock.stockservice.application.ports.input;
 
-import com.example.coupon.common.command.StockBuyCommand;
+import com.example.stock.common.command.StockBuyCommand;
 import com.example.stock.stockservice.application.ports.input.web.OrderStatusResponse;
 import com.example.stock.stockservice.application.ports.input.web.OrderStatusCommand;
 import com.example.stock.stockservice.core.Order;

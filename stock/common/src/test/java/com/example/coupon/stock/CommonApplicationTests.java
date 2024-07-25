@@ -1,4 +1,4 @@
-package com.example.coupon.common;
+package com.example.coupon.stock;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

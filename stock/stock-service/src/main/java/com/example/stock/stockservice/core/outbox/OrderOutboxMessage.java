@@ -1,5 +1,6 @@
-package com.example.stock.stockservice.core;
+package com.example.stock.stockservice.core.outbox;
 
+import com.example.stock.common.infrastructure.outbox.OutboxStatus;
 import com.example.stock.stockservice.core.vo.OrderStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,15 +9,12 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class Order {
+public class OrderOutboxMessage {
     private Long id;
+    private Long orderId;
     private Long userId;
     private UUID productId;
     private int quantity;
     private OrderStatus orderStatus;
-
-    public Order updateStatus(OrderStatus status) {
-        this.orderStatus = status;
-        return this;
-    }
+    private OutboxStatus outboxStatus;
 }

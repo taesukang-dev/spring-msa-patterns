@@ -1,6 +1,6 @@
 package com.example.stock.stockservice.application;
 
-import com.example.coupon.common.command.StockBuyCommand;
+import com.example.stock.common.command.StockBuyCommand;
 import com.example.stock.stockservice.application.ports.input.StockService;
 import com.example.stock.stockservice.application.ports.input.web.OrderStatusCommand;
 import com.example.stock.stockservice.application.ports.input.web.OrderStatusResponse;
@@ -26,6 +26,7 @@ public class StockServiceImpl implements StockService {
         return stockServiceHelper.buy(
                 new StockBuyCommand(
                         command.productId(),
+                        command.userId(),
                         command.quantity()
                 )
         );

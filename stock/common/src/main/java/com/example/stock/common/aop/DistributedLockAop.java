@@ -1,6 +1,6 @@
-package com.example.coupon.common.aop;
+package com.example.stock.common.aop;
 
-import com.example.coupon.common.command.StockBuyCommand;
+import com.example.stock.common.command.StockBuyCommand;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -22,7 +22,7 @@ public class DistributedLockAop {
     private final RedissonClient redissonClient;
     private final MyTransactionManager myTransactionManager;
 
-    @Around("@annotation(com.example.coupon.common.aop.DistributedLock)")
+    @Around("@annotation(com.example.stock.common.aop.DistributedLock)")
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

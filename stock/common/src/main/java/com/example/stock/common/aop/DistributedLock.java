@@ -1,4 +1,4 @@
-package com.example.coupon.common.aop;
+package com.example.stock.common.aop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,6 +1,6 @@
 package com.example.stock.stockservice.application.ports.input.web;
 
-import com.example.coupon.common.command.StockBuyCommand;
+import com.example.stock.common.command.StockBuyCommand;
 import com.example.stock.stockservice.application.ports.input.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

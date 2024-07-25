@@ -1,4 +1,4 @@
-package com.example.coupon.common.aop;
+package com.example.stock.common.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.stereotype.Component;

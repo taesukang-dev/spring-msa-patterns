@@ -21,3 +21,14 @@ dependencies {
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
+
+avro {
+	fieldVisibility = "PRIVATE"
+	outputCharacterEncoding = "UTF-8"
+}
+
+generateAvroJava {
+	source ("src/main/resources/avro")
+	include("*.avsc")
+	outputDir = file("src/main/java")
+}

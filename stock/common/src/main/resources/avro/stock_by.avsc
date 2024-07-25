@@ -1,0 +1,22 @@
+{
+  "namespace": "com.example.stock.common.infrastructure.model",
+  "type": "record",
+  "name": "OrderAvroModel",
+  "fields": [
+    {
+      "name": "productId",
+          "type": {
+              "type": "string",
+              "logicalType": "uuid"
+          }
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "quantity",
+      "type": "int"
+    }
+  ]
+}

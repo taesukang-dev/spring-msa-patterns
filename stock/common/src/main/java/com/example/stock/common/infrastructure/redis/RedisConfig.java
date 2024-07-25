@@ -1,4 +1,4 @@
-package com.example.coupon.common.infrastructure.redis;
+package com.example.stock.common.infrastructure.redis;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
