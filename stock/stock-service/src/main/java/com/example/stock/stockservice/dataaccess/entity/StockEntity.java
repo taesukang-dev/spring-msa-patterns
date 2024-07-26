@@ -19,8 +19,6 @@ public class StockEntity {
     private int price;
     private int totalQuantity;
     private int availableQuantity;
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
     @Version
     private Long version;
 

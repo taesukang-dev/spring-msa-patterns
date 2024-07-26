@@ -41,6 +41,7 @@ public class StockServiceHelper {
 
         orderOutboxRepository.save(
                 OrderOutboxMessage.builder()
+                        .id(UUID.randomUUID())
                         .orderId(pendingOrder.getId())
                         .userId(stockBuyCommand.userId())
                         .productId(stockBuyCommand.productId())

@@ -56,6 +56,7 @@ public class StockDataAccessMapper {
 
     public OrderOutboxEntity orderOutboxMessageToOrderOutboxEntity(OrderOutboxMessage orderOutboxMessage) {
         return OrderOutboxEntity.builder()
+                .id(orderOutboxMessage.getId())
                 .orderId(orderOutboxMessage.getOrderId())
                 .userId(orderOutboxMessage.getUserId())
                 .productId(orderOutboxMessage.getProductId())
