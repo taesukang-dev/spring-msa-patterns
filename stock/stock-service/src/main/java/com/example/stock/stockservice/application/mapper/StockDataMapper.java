@@ -7,21 +7,18 @@ import com.example.stock.stockservice.core.event.StockBuyEvent;
 import com.example.stock.stockservice.core.vo.OrderStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class StockDataMapper {
 
-    public Order stockBuyCommandToOrder(StockBuyCommand stockBuyCommand) {
-        return Order.builder()
-                .productId(stockBuyCommand.productId())
-                .userId(stockBuyCommand.userId())
-                .quantity(stockBuyCommand.quantity())
-                .orderStatus(OrderStatus.PENDING)
-                .build();
-    }
-
-    public StockBuyEvent stockBuyCommandToEvent(StockBuyCommand stockBuyCommand) {
+    public StockBuyEvent stockBuyCommandToEvent(
+            StockBuyCommand stockBuyCommand,
+            UUID orderId
+    ) {
         return StockBuyEvent
                 .builder()
+                .orderId(orderId)
                 .productId(stockBuyCommand.productId())
                 .userId(stockBuyCommand.userId())
                 .quantity(stockBuyCommand.quantity())

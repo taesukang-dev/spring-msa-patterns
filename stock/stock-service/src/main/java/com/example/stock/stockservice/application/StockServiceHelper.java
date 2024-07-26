@@ -10,10 +10,13 @@ import com.example.stock.stockservice.application.ports.output.StockRepository;
 import com.example.stock.stockservice.core.Order;
 import com.example.stock.stockservice.core.Stock;
 import com.example.stock.stockservice.core.outbox.OrderOutboxMessage;
+import com.example.stock.stockservice.core.vo.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
@@ -33,7 +36,7 @@ public class StockServiceHelper {
     public Order buy(StockBuyCommand stockBuyCommand) {
         checkQuantityAndUpdate(stockBuyCommand);
         Order pendingOrder = orderRepository.save(
-                mapper.stockBuyCommandToOrder(stockBuyCommand)
+                createOrder(stockBuyCommand)
         );
 
         orderOutboxRepository.save(
@@ -46,7 +49,9 @@ public class StockServiceHelper {
                         .outboxStatus(OutboxStatus.STARTED)
                         .build()
         );
-        publisher.publishEvent(mapper.stockBuyCommandToEvent(stockBuyCommand));
+        publisher.publishEvent(
+                mapper.stockBuyCommandToEvent(stockBuyCommand, pendingOrder.getId())
+        );
         return pendingOrder;
     }
 
@@ -61,6 +66,17 @@ public class StockServiceHelper {
         int updateQuantity = stock.getAvailableQuantity() - stockBuyCommand.quantity();
         stock.updateAvailableQuantity(updateQuantity);
         stockRepository.save(stock);
+    }
+
+    private Order createOrder(StockBuyCommand stockBuyCommand) {
+        UUID id = UUID.randomUUID();
+        return Order.builder()
+                .id(id)
+                .productId(stockBuyCommand.productId())
+                .userId(stockBuyCommand.userId())
+                .quantity(stockBuyCommand.quantity())
+                .orderStatus(OrderStatus.PENDING)
+                .build();
     }
 
 }

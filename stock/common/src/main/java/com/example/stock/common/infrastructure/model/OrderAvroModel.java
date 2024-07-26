@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -7093182521269686340L;
+  private static final long serialVersionUID = 6669020358871780198L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderAvroModel\",\"namespace\":\"com.example.stock.common.infrastructure.model\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"quantity\",\"type\":\"int\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderAvroModel\",\"namespace\":\"com.example.stock.common.infrastructure.model\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"quantity\",\"type\":\"int\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -77,6 +77,7 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
   }
 
   private java.util.UUID productId;
+  private java.util.UUID orderId;
   private long userId;
   private int quantity;
 
@@ -90,11 +91,13 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
   /**
    * All-args constructor.
    * @param productId The new value for productId
+   * @param orderId The new value for orderId
    * @param userId The new value for userId
    * @param quantity The new value for quantity
    */
-  public OrderAvroModel(java.util.UUID productId, java.lang.Long userId, java.lang.Integer quantity) {
+  public OrderAvroModel(java.util.UUID productId, java.util.UUID orderId, java.lang.Long userId, java.lang.Integer quantity) {
     this.productId = productId;
+    this.orderId = orderId;
     this.userId = userId;
     this.quantity = quantity;
   }
@@ -110,14 +113,16 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return productId;
-    case 1: return userId;
-    case 2: return quantity;
+    case 1: return orderId;
+    case 2: return userId;
+    case 3: return quantity;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   private static final org.apache.avro.Conversion<?>[] conversions =
       new org.apache.avro.Conversion<?>[] {
+      new org.apache.avro.Conversions.UUIDConversion(),
       new org.apache.avro.Conversions.UUIDConversion(),
       null,
       null,
@@ -135,8 +140,9 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: productId = (java.util.UUID)value$; break;
-    case 1: userId = (java.lang.Long)value$; break;
-    case 2: quantity = (java.lang.Integer)value$; break;
+    case 1: orderId = (java.util.UUID)value$; break;
+    case 2: userId = (java.lang.Long)value$; break;
+    case 3: quantity = (java.lang.Integer)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -156,6 +162,23 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
    */
   public void setProductId(java.util.UUID value) {
     this.productId = value;
+  }
+
+  /**
+   * Gets the value of the 'orderId' field.
+   * @return The value of the 'orderId' field.
+   */
+  public java.util.UUID getOrderId() {
+    return orderId;
+  }
+
+
+  /**
+   * Sets the value of the 'orderId' field.
+   * @param value the value to set.
+   */
+  public void setOrderId(java.util.UUID value) {
+    this.orderId = value;
   }
 
   /**
@@ -234,6 +257,7 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
     implements org.apache.avro.data.RecordBuilder<OrderAvroModel> {
 
     private java.util.UUID productId;
+    private java.util.UUID orderId;
     private long userId;
     private int quantity;
 
@@ -252,13 +276,17 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
         this.productId = data().deepCopy(fields()[0].schema(), other.productId);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.userId)) {
-        this.userId = data().deepCopy(fields()[1].schema(), other.userId);
+      if (isValidValue(fields()[1], other.orderId)) {
+        this.orderId = data().deepCopy(fields()[1].schema(), other.orderId);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.quantity)) {
-        this.quantity = data().deepCopy(fields()[2].schema(), other.quantity);
+      if (isValidValue(fields()[2], other.userId)) {
+        this.userId = data().deepCopy(fields()[2].schema(), other.userId);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
+      }
+      if (isValidValue(fields()[3], other.quantity)) {
+        this.quantity = data().deepCopy(fields()[3].schema(), other.quantity);
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
     }
 
@@ -272,13 +300,17 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
         this.productId = data().deepCopy(fields()[0].schema(), other.productId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.userId)) {
-        this.userId = data().deepCopy(fields()[1].schema(), other.userId);
+      if (isValidValue(fields()[1], other.orderId)) {
+        this.orderId = data().deepCopy(fields()[1].schema(), other.orderId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.quantity)) {
-        this.quantity = data().deepCopy(fields()[2].schema(), other.quantity);
+      if (isValidValue(fields()[2], other.userId)) {
+        this.userId = data().deepCopy(fields()[2].schema(), other.userId);
         fieldSetFlags()[2] = true;
+      }
+      if (isValidValue(fields()[3], other.quantity)) {
+        this.quantity = data().deepCopy(fields()[3].schema(), other.quantity);
+        fieldSetFlags()[3] = true;
       }
     }
 
@@ -323,6 +355,46 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
     }
 
     /**
+      * Gets the value of the 'orderId' field.
+      * @return The value.
+      */
+    public java.util.UUID getOrderId() {
+      return orderId;
+    }
+
+
+    /**
+      * Sets the value of the 'orderId' field.
+      * @param value The value of 'orderId'.
+      * @return This builder.
+      */
+    public com.example.stock.common.infrastructure.model.OrderAvroModel.Builder setOrderId(java.util.UUID value) {
+      validate(fields()[1], value);
+      this.orderId = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'orderId' field has been set.
+      * @return True if the 'orderId' field has been set, false otherwise.
+      */
+    public boolean hasOrderId() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'orderId' field.
+      * @return This builder.
+      */
+    public com.example.stock.common.infrastructure.model.OrderAvroModel.Builder clearOrderId() {
+      orderId = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'userId' field.
       * @return The value.
       */
@@ -337,9 +409,9 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.example.stock.common.infrastructure.model.OrderAvroModel.Builder setUserId(long value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.userId = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -348,7 +420,7 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'userId' field has been set, false otherwise.
       */
     public boolean hasUserId() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -357,7 +429,7 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.example.stock.common.infrastructure.model.OrderAvroModel.Builder clearUserId() {
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -376,9 +448,9 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.example.stock.common.infrastructure.model.OrderAvroModel.Builder setQuantity(int value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.quantity = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -387,7 +459,7 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'quantity' field has been set, false otherwise.
       */
     public boolean hasQuantity() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -396,7 +468,7 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.example.stock.common.infrastructure.model.OrderAvroModel.Builder clearQuantity() {
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -406,8 +478,9 @@ public class OrderAvroModel extends org.apache.avro.specific.SpecificRecordBase 
       try {
         OrderAvroModel record = new OrderAvroModel();
         record.productId = fieldSetFlags()[0] ? this.productId : (java.util.UUID) defaultValue(fields()[0]);
-        record.userId = fieldSetFlags()[1] ? this.userId : (java.lang.Long) defaultValue(fields()[1]);
-        record.quantity = fieldSetFlags()[2] ? this.quantity : (java.lang.Integer) defaultValue(fields()[2]);
+        record.orderId = fieldSetFlags()[1] ? this.orderId : (java.util.UUID) defaultValue(fields()[1]);
+        record.userId = fieldSetFlags()[2] ? this.userId : (java.lang.Long) defaultValue(fields()[2]);
+        record.quantity = fieldSetFlags()[3] ? this.quantity : (java.lang.Integer) defaultValue(fields()[3]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;

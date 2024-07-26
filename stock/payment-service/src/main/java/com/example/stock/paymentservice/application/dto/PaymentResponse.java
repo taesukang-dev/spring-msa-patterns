@@ -1,17 +1,19 @@
-package com.example.stock.stockservice.core.event;
+package com.example.stock.paymentservice.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.UUID;
 
 @AllArgsConstructor
 @Builder
-@Data
-public class StockBuyEvent {
+@Getter
+public class PaymentResponse {
     UUID productId;
     UUID orderId;
     Long userId;
+    Long paymentId;
     int quantity;
+    boolean result;
 }

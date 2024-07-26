@@ -11,6 +11,7 @@ public class OrderMessagingMapper {
 
     public OrderAvroModel stockBuyEventToOrderAvroModel(StockBuyEvent stockBuyEvent) {
         return OrderAvroModel.newBuilder()
+                .setOrderId(stockBuyEvent.getOrderId())
                 .setProductId(stockBuyEvent.getProductId())
                 .setUserId(stockBuyEvent.getUserId())
                 .setQuantity(stockBuyEvent.getQuantity())
