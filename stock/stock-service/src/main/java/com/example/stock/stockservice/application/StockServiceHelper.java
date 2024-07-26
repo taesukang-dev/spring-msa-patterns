@@ -31,7 +31,7 @@ public class StockServiceHelper {
 
     @Transactional
     public Order buy(StockBuyCommand stockBuyCommand) {
-        checkQuantityAndDecrease(stockBuyCommand);
+        checkQuantityAndUpdate(stockBuyCommand);
         Order pendingOrder = orderRepository.save(
                 mapper.stockBuyCommandToOrder(stockBuyCommand)
         );
@@ -51,20 +51,16 @@ public class StockServiceHelper {
     }
 
     @DistributedLock
-    private void checkQuantityAndDecrease(StockBuyCommand stockBuyCommand) {
+    private void checkQuantityAndUpdate(StockBuyCommand stockBuyCommand) {
         Stock stock = stockRepository.findById(stockBuyCommand.productId())
                 .orElseThrow(() -> new RuntimeException("Item Not Found"));
         if (!stock.isAvailableToBuy(stockBuyCommand.quantity())) {
             throw new RuntimeException("Not available to buy");
         }
 
-        boolean updated = stockRepository.decreaseQuantity(
-                stockBuyCommand.productId(),
-                stock.getAvailableQuantity() - stockBuyCommand.quantity()
-        );
-        if (!updated) {
-            throw new RuntimeException("Out of Stock");
-        }
+        int updateQuantity = stock.getAvailableQuantity() - stockBuyCommand.quantity();
+        stock.updateAvailableQuantity(updateQuantity);
+        stockRepository.save(stock);
     }
 
 }

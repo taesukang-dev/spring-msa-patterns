@@ -14,8 +14,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Repository
 public class StockRepositoryImpl implements StockRepository {
-    private static final int ONLY_ONE_AFFECTED_ROW = 1;
-
     private final StockJpaRepository stockJpaRepository;
     private final StockDataAccessMapper mapper;
 
@@ -30,16 +28,5 @@ public class StockRepositoryImpl implements StockRepository {
         return mapper.stockEntityToStock(
                 stockJpaRepository.save(mapper.stockToStockEntity(stock))
         );
-    }
-
-    @Override
-    public boolean decreaseQuantity(UUID productId, int quantity) {
-        Integer result = null;
-        try {
-            result = stockJpaRepository.decreaseQuantity(productId, quantity);
-        } catch (OptimisticLockingFailureException e) {
-            throw new RuntimeException("Lost Update Occurred");
-        }
-        return result == ONLY_ONE_AFFECTED_ROW;
     }
 }

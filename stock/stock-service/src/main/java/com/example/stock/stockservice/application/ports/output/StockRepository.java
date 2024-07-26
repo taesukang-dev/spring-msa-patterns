@@ -9,6 +9,4 @@ public interface StockRepository {
     Optional<Stock> findById(UUID productId);
 
     Stock save(Stock stock);
-
-    boolean decreaseQuantity(UUID productId, int quantity);
 }

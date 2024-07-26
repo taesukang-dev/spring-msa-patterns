@@ -1,6 +1,5 @@
 package com.example.stock.stockservice.core;
 
-import com.example.stock.stockservice.core.vo.OrderStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,9 +13,15 @@ public class Stock {
     private int price;
     private int totalQuantity;
     private int availableQuantity;
+    private Long version;
 
 
     public boolean isAvailableToBuy(int quantity) {
         return availableQuantity - quantity >= 0;
+    }
+
+    public int updateAvailableQuantity(int quantity) {
+        this.availableQuantity = quantity;
+        return this.availableQuantity;
     }
 }

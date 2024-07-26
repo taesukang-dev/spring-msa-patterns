@@ -18,6 +18,7 @@ public class StockDataAccessMapper {
                 .price(stockEntity.getPrice())
                 .totalQuantity(stockEntity.getTotalQuantity())
                 .availableQuantity(stockEntity.getAvailableQuantity())
+                .version(stockEntity.getVersion())
                 .build();
     }
 
@@ -28,6 +29,7 @@ public class StockDataAccessMapper {
                 .price(stock.getPrice())
                 .totalQuantity(stock.getTotalQuantity())
                 .availableQuantity(stock.getAvailableQuantity())
+                .version(stock.getVersion())
                 .build();
     }
 
