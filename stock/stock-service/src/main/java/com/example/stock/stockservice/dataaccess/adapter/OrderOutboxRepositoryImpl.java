@@ -7,6 +7,9 @@ import com.example.stock.stockservice.dataaccess.repository.OrderOutBoxJpaReposi
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Repository
 public class OrderOutboxRepositoryImpl implements OrderOutboxRepository {
@@ -21,6 +24,12 @@ public class OrderOutboxRepositoryImpl implements OrderOutboxRepository {
                         mapper.orderOutboxMessageToOrderOutboxEntity(orderOutboxMessage)
                 )
         );
+    }
+
+    @Override
+    public Optional<OrderOutboxMessage> findByOrderId(UUID id) {
+        return orderOutBoxJpaRepository.findByOrderId(id)
+                .map(mapper::orderOutboxEntityToOrderOutBoxMessage);
     }
 
 }

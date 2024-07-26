@@ -5,6 +5,7 @@ import com.example.stock.stockservice.core.Stock;
 import com.example.stock.stockservice.dataaccess.mapper.StockDataAccessMapper;
 import com.example.stock.stockservice.dataaccess.repository.StockJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -32,9 +33,13 @@ public class StockRepositoryImpl implements StockRepository {
     }
 
     @Override
-    // TODO : Optimistic Locking
     public boolean decreaseQuantity(UUID productId, int quantity) {
-        return stockJpaRepository.decreaseQuantity(productId, quantity)
-                == ONLY_ONE_AFFECTED_ROW;
+        Integer result = null;
+        try {
+            result = stockJpaRepository.decreaseQuantity(productId, quantity);
+        } catch (OptimisticLockingFailureException e) {
+            throw new RuntimeException("Lost Update Occurred");
+        }
+        return result == ONLY_ONE_AFFECTED_ROW;
     }
 }

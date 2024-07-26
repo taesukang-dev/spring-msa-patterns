@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Builder
@@ -17,9 +18,9 @@ import java.util.UUID;
 @Entity
 public class OrderOutboxEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long orderId;
+    @Id
+    private UUID id;
+    private UUID orderId;
     private Long userId;
     private UUID productId;
     private int quantity;
@@ -27,4 +28,17 @@ public class OrderOutboxEntity {
     private OrderStatus orderStatus;
     @Enumerated(EnumType.STRING)
     private OutboxStatus outboxStatus;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderOutboxEntity that = (OrderOutboxEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

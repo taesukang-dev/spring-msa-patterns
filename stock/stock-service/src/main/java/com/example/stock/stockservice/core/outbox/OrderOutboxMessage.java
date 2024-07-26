@@ -10,11 +10,16 @@ import java.util.UUID;
 @Getter
 @Builder
 public class OrderOutboxMessage {
-    private Long id;
-    private Long orderId;
+    private UUID id;
+    private UUID orderId;
     private Long userId;
     private UUID productId;
     private int quantity;
     private OrderStatus orderStatus;
     private OutboxStatus outboxStatus;
+
+    public OrderOutboxMessage updateStatus(OutboxStatus outboxStatus) {
+        this.outboxStatus = outboxStatus;
+        return this;
+    }
 }

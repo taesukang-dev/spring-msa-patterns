@@ -32,3 +32,11 @@ generateAvroJava {
 	include("*.avsc")
 	outputDir = file("src/main/java")
 }
+
+bootJar {
+	enabled = false
+}
+
+jar {
+	enabled = true
+}

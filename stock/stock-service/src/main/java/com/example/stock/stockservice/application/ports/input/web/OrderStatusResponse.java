@@ -8,12 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
 @Builder
 public record OrderStatusResponse(
-        Long id,
+        UUID id,
         UUID productId,
         int quantity,
         OrderStatus orderStatus

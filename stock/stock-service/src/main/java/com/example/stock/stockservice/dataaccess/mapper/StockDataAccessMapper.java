@@ -33,9 +33,11 @@ public class StockDataAccessMapper {
 
     public Order orderEntityToOrder(OrderEntity order) {
         return Order.builder()
+                .id(order.getId())
                 .productId(order.getProductId())
                 .quantity(order.getQuantity())
                 .orderStatus(order.getOrderStatus())
+                .version(order.getVersion())
                 .build();
     }
 
@@ -46,6 +48,7 @@ public class StockDataAccessMapper {
                 .productId(order.getProductId())
                 .quantity(order.getQuantity())
                 .orderStatus(order.getOrderStatus())
+                .version(order.getVersion())
                 .build();
     }
 

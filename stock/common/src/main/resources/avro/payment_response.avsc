@@ -1,0 +1,37 @@
+{
+  "namespace": "com.example.stock.common.infrastructure.model",
+  "type": "record",
+  "name": "PaymentResponseAvroModel",
+  "fields": [
+    {
+      "name": "productId",
+          "type": {
+              "type": "string",
+              "logicalType": "uuid"
+          }
+    },
+    {
+      "name": "orderId",
+          "type": {
+              "type": "string",
+              "logicalType": "uuid"
+          }
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "paymentId",
+      "type": "long"
+    },
+    {
+      "name": "result",
+      "type": "boolean"
+    },
+    {
+      "name": "quantity",
+      "type": "int"
+    }
+  ]
+}
