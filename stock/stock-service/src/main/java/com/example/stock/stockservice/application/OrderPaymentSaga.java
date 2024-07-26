@@ -8,6 +8,7 @@ import com.example.stock.stockservice.core.Order;
 import com.example.stock.stockservice.core.outbox.OrderOutboxMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.stock.stockservice.core.vo.OrderStatus.CANCELLED;
 import static com.example.stock.stockservice.core.vo.OrderStatus.PAID;
@@ -19,7 +20,7 @@ public class OrderPaymentSaga {
     private final OrderRepository orderRepository;
     private final OrderOutboxRepository orderOutboxRepository;
 
-
+    @Transactional
     public void process(PaymentResponse paymentResponse) {
         // order -> PAID
         Order order = orderRepository.findById(paymentResponse.getOrderId())
@@ -33,6 +34,7 @@ public class OrderPaymentSaga {
         orderOutboxRepository.save(orderOutboxMessage);
     }
 
+    @Transactional
     public void rollback(PaymentResponse paymentResponse) {
         // order -> CANCELLED
         Order order = orderRepository.findById(paymentResponse.getOrderId())
