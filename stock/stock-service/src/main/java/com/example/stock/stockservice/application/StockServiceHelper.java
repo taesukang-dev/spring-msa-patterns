@@ -35,11 +35,12 @@ public class StockServiceHelper {
 
     @Transactional
     public Order buy(StockBuyCommand stockBuyCommand) {
+        // 재고 처리
         checkQuantityAndUpdate(stockBuyCommand);
         Order pendingOrder = orderRepository.save(
                 createOrder(stockBuyCommand)
         );
-
+        // Outbox 저장
         orderOutboxRepository.save(
                 OrderOutboxMessage.builder()
                         .id(UUID.randomUUID())
@@ -51,6 +52,7 @@ public class StockServiceHelper {
                         .outboxStatus(OutboxStatus.STARTED)
                         .build()
         );
+        // @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT) 로 위 처리들이 정상적으로 수행됐다면 실행
         publisher.publishEvent(
                 mapper.stockBuyCommandToEvent(stockBuyCommand, pendingOrder.getId())
         );
