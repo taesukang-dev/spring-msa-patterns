@@ -5,7 +5,6 @@ import com.example.stock.stockservice.core.Stock;
 import com.example.stock.stockservice.dataaccess.mapper.StockDataAccessMapper;
 import com.example.stock.stockservice.dataaccess.repository.StockJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

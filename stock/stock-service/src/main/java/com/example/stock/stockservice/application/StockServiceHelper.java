@@ -13,6 +13,7 @@ import com.example.stock.stockservice.core.outbox.OrderOutboxMessage;
 import com.example.stock.stockservice.core.vo.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,7 +67,12 @@ public class StockServiceHelper {
 
         int updateQuantity = stock.getAvailableQuantity() - stockBuyCommand.quantity();
         stock.updateAvailableQuantity(updateQuantity);
-        stockRepository.save(stock);
+
+        try {
+            stockRepository.save(stock);
+        } catch (OptimisticLockingFailureException e) {
+            throw new RuntimeException("Lost Update Occurred");
+        }
     }
 
     private Order createOrder(StockBuyCommand stockBuyCommand) {
