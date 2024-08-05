@@ -1,0 +1,42 @@
+plugins {
+    id "com.github.davidmc24.gradle.plugin.avro" version "1.9.1"
+}
+
+group = 'com.example.delivery'
+version = '0.0.1-SNAPSHOT'
+
+dependencies {
+    // redis
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//    implementation 'org.springframework.session:spring-session-data-redis'
+//    implementation 'org.redisson:redisson-spring-boot-starter:3.17.7'
+
+    implementation 'org.apache.avro:avro:1.11.3'
+    implementation("io.confluent:kafka-avro-serializer:7.6.1") {
+        exclude group: "org.slf4j", module: "slf4j-log4j12"
+        exclude group: "log4j", module: "log4j"
+        exclude group: "io.swagger", module: "swagger-annotations"
+        exclude group: "io.swagger", module: "swagger-core"
+    }
+}
+
+tasks.register("prepareKotlinBuildScriptModel"){}
+
+avro {
+    fieldVisibility = "PRIVATE"
+    outputCharacterEncoding = "UTF-8"
+}
+
+generateAvroJava {
+    source ("src/main/resources/avro")
+    include("*.avsc")
+    outputDir = file("src/main/java")
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

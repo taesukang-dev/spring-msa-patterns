@@ -1,6 +1,6 @@
 package com.example.delivery.orderservice.dataaccess.entity;
 
-import com.example.delivery.orderservice.core.vo.OrderStatus;
+import com.example.delivery.infrastructure.vo.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

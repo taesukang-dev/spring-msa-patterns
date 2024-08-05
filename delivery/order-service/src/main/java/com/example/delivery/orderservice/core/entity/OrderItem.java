@@ -12,7 +12,7 @@ import java.util.UUID;
 public class OrderItem {
     private int orderItemId;
     private UUID orderId;
-    private final Product product;
+    private final UUID productId;
     private final int quantity;
     private final BigDecimal price;
     private final BigDecimal subTotal;

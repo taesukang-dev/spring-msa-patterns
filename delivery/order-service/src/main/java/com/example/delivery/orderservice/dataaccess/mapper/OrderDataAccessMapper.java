@@ -1,12 +1,14 @@
 package com.example.delivery.orderservice.dataaccess.mapper;
 
+import com.example.delivery.orderservice.application.outbox.RestaurantApprovalOutboxMessage;
 import com.example.delivery.orderservice.core.entity.Order;
 import com.example.delivery.orderservice.core.entity.OrderItem;
-import com.example.delivery.orderservice.core.entity.Product;
 import com.example.delivery.orderservice.dataaccess.entity.OrderEntity;
 import com.example.delivery.orderservice.dataaccess.entity.OrderItemEntity;
+import com.example.delivery.orderservice.dataaccess.entity.outbox.RestaurantApprovalOutboxMessageEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -51,7 +53,7 @@ public class OrderDataAccessMapper {
         return OrderItemEntity
                 .builder()
                 .orderItemId((long) orderItem.getOrderItemId())
-                .productId(orderItem.getProduct().getProductId())
+                .productId(orderItem.getProductId())
                 .price(orderItem.getPrice())
                 .quantity(orderItem.getQuantity())
                 .subTotal(orderItem.getSubTotal())
@@ -63,10 +65,34 @@ public class OrderDataAccessMapper {
                 .builder()
                 .orderItemId(orderItemEntity.getOrderItemId().intValue())
                 .orderId(orderItemEntity.getOrder().getOrderId())
-                .product(new Product(orderItemEntity.getProductId()))
+                .productId(orderItemEntity.getProductId())
                 .price(orderItemEntity.getPrice())
                 .quantity(orderItemEntity.getQuantity())
                 .subTotal(orderItemEntity.getSubTotal())
+                .build();
+    }
+
+    public RestaurantApprovalOutboxMessageEntity restaurantOutboxMessageToEntity(RestaurantApprovalOutboxMessage outboxMessage) {
+        return RestaurantApprovalOutboxMessageEntity
+                .builder()
+                .id(UUID.randomUUID())
+                .userId(outboxMessage.getUserId())
+                .restaurantId(outboxMessage.getRestaurantId())
+                .trackingId(outboxMessage.getTrackingId())
+                .orderStatus(outboxMessage.getOrderStatus())
+                .outboxStatus(outboxMessage.getOutboxStatus())
+                .build();
+    }
+
+    public RestaurantApprovalOutboxMessage restaurantOutboxMessageEntityToMessage(RestaurantApprovalOutboxMessageEntity outboxMessage) {
+        return RestaurantApprovalOutboxMessage
+                .builder()
+                .orderId(UUID.randomUUID())
+                .userId(outboxMessage.getUserId())
+                .restaurantId(outboxMessage.getRestaurantId())
+                .trackingId(outboxMessage.getTrackingId())
+                .orderStatus(outboxMessage.getOrderStatus())
+                .outboxStatus(outboxMessage.getOutboxStatus())
                 .build();
     }
 }

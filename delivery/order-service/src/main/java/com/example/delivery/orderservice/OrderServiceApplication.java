@@ -2,9 +2,8 @@ package com.example.delivery.orderservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication(scanBasePackages = "com.example.delivery")
 public class OrderServiceApplication {
 
     public static void main(String[] args) {

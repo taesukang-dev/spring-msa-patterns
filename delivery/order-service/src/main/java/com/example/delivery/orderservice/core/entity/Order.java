@@ -1,6 +1,6 @@
 package com.example.delivery.orderservice.core.entity;
 
-import com.example.delivery.orderservice.core.vo.OrderStatus;
+import com.example.delivery.infrastructure.vo.OrderStatus;
 import lombok.Builder;
 import lombok.Getter;
 

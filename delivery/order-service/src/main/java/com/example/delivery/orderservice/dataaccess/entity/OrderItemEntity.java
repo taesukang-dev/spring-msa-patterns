@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-@IdClass(OrderItemId.class)
+@IdClass(OrderItemEntityId.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

@@ -2,9 +2,11 @@ package com.example.delivery.orderservice.application.mapper;
 
 import com.example.delivery.orderservice.application.dto.OrderCommand;
 import com.example.delivery.orderservice.application.dto.OrderItemCommand;
+import com.example.delivery.orderservice.application.outbox.RestaurantApprovalOutboxMessage;
 import com.example.delivery.orderservice.core.entity.Order;
 import com.example.delivery.orderservice.core.entity.OrderItem;
-import com.example.delivery.orderservice.core.entity.Product;
+import com.example.delivery.orderservice.core.event.RestaurantApprovalEvent;
+import com.example.delivery.outbox.OutboxStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -26,10 +28,39 @@ public class OrderDataMapper {
     private OrderItem orderItemCommandToOrderItem(OrderItemCommand orderItemCommand) {
         return OrderItem
                 .builder()
-                .product(new Product(orderItemCommand.productId()))
+                .productId(orderItemCommand.productId())
                 .quantity(orderItemCommand.quantity())
                 .price(orderItemCommand.price())
                 .subTotal(orderItemCommand.subTotal())
+                .build();
+    }
+
+    public RestaurantApprovalOutboxMessage orderToRestaurantApprovalOutboxMessage(Order order) {
+        return RestaurantApprovalOutboxMessage.builder()
+                .orderId(order.getId())
+                .userId(order.getUserId())
+                .restaurantId(order.getRestaurantId())
+                .trackingId(order.getTrackingId())
+                .orderStatus(order.getOrderStatus())
+                .outboxStatus(OutboxStatus.STARTED)
+                .build();
+    }
+
+    public RestaurantApprovalEvent orderToRestaurantApprovalEvent(Order order) {
+
+        return RestaurantApprovalEvent.builder()
+                .orderId(order.getId())
+                .userId(order.getUserId())
+                .restaurantId(order.getRestaurantId())
+                .deliveryAddress(order.getDeliveryAddress())
+                .totalPrice(order.getTotalPrice())
+                .productIds(
+                        order.getOrderItems()
+                                .stream().map(OrderItem::getProductId)
+                                .collect(Collectors.toList())
+                )
+                .trackingId(order.getTrackingId())
+                .orderStatus(order.getOrderStatus())
                 .build();
     }
 
