@@ -1,6 +1,5 @@
 package com.example.delivery.restaurantservice.messaging.listner.kafka;
 
-import com.example.delivery.infrastructure.kafka.KafkaConst;
 import com.example.delivery.infrastructure.model.RestaurantApprovalRequestAvroModel;
 import com.example.delivery.restaurantservice.application.ports.input.RestaurantApprovalRequestMessageListener;
 import com.example.delivery.restaurantservice.messaging.mapper.RestaurantMessagingMapper;

@@ -11,6 +11,13 @@
       }
     },
     {
+      "name": "sagaId",
+      "type": {
+          "type": "string",
+          "logicalType": "uuid"
+      }
+    },
+    {
       "name": "userId",
       "type": "long"
     },

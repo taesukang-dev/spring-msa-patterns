@@ -15,6 +15,7 @@ import java.util.UUID;
 @Builder
 @Getter
 public class RestaurantApprovalEvent {
+    private UUID sagaId;
     private UUID orderId;
     private Long userId;
     private UUID restaurantId;

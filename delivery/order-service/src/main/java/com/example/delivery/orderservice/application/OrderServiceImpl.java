@@ -1,16 +1,16 @@
 package com.example.delivery.orderservice.application;
 
 import com.example.delivery.orderservice.application.mapper.OrderDataMapper;
-import com.example.delivery.orderservice.application.outbox.RestaurantApprovalOutboxMessage;
 import com.example.delivery.orderservice.application.ports.input.OrderService;
 import com.example.delivery.orderservice.application.dto.OrderCommand;
 import com.example.delivery.orderservice.application.ports.output.OrderRepository;
-import com.example.delivery.orderservice.application.ports.output.RestaurantApprovalExternalMessageListener;
 import com.example.delivery.orderservice.application.ports.output.RestaurantApprovalOutboxMessageRepository;
 import com.example.delivery.orderservice.core.entity.Order;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -32,11 +32,14 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         // 2. approval event outbox 저장
-        raRepository.save(mapper.orderToRestaurantApprovalOutboxMessage(order));
+        UUID sagaId = UUID.randomUUID();
+        raRepository.save(
+                mapper.orderToRestaurantApprovalOutboxMessage(order, sagaId)
+        );
 
         // 3. restaurant 에서 available 한지 check, kafka messaging
         publisher.publishEvent(
-                mapper.orderToRestaurantApprovalEvent(order)
+                mapper.orderToRestaurantApprovalEvent(order, sagaId)
         );
     }
 

@@ -15,6 +15,7 @@ import java.util.UUID;
 @Builder
 @Getter
 public class RestaurantApprovalRequest {
+    private UUID sagaId;
     private UUID orderId;
     private Long userId;
     private UUID restaurantId;

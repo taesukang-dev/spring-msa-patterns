@@ -9,6 +9,7 @@ import com.example.delivery.orderservice.core.event.RestaurantApprovalEvent;
 import com.example.delivery.outbox.OutboxStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -35,8 +36,9 @@ public class OrderDataMapper {
                 .build();
     }
 
-    public RestaurantApprovalOutboxMessage orderToRestaurantApprovalOutboxMessage(Order order) {
+    public RestaurantApprovalOutboxMessage orderToRestaurantApprovalOutboxMessage(Order order, UUID sagaId) {
         return RestaurantApprovalOutboxMessage.builder()
+                .sagaId(sagaId)
                 .orderId(order.getId())
                 .userId(order.getUserId())
                 .restaurantId(order.getRestaurantId())
@@ -46,9 +48,9 @@ public class OrderDataMapper {
                 .build();
     }
 
-    public RestaurantApprovalEvent orderToRestaurantApprovalEvent(Order order) {
-
+    public RestaurantApprovalEvent orderToRestaurantApprovalEvent(Order order, UUID sagaId) {
         return RestaurantApprovalEvent.builder()
+                .sagaId(sagaId)
                 .orderId(order.getId())
                 .userId(order.getUserId())
                 .restaurantId(order.getRestaurantId())

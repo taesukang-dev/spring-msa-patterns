@@ -1,0 +1,40 @@
+{
+  "type": "record",
+  "name": "RestaurantApprovalResponseAvroModel",
+  "namespace": "com.example.delivery.infrastructure.model",
+  "fields": [
+    {
+      "name": "orderId",
+      "type": {
+          "type": "string",
+          "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "sagaId",
+      "type": {
+          "type": "string",
+          "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "restaurantId",
+      "type": {
+          "type": "string",
+          "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "deliveryAddress",
+      "type": "string"
+    },
+    {
+      "name": "result",
+      "type": "boolean"
+    }
+  ]
+}

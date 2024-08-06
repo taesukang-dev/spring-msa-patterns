@@ -5,9 +5,10 @@ import com.example.delivery.orderservice.application.ports.output.RestaurantAppr
 import com.example.delivery.orderservice.core.event.RestaurantApprovalEvent;
 import com.example.delivery.orderservice.messaging.mapper.OrderMessagingMapper;
 import lombok.RequiredArgsConstructor;
-import com.example.delivery.infrastructure.kafka.KafkaConst;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+
+import static com.example.delivery.infrastructure.kafka.KafkaConst.RESTAURANT_APPROVAL_TOPIC;
 
 @RequiredArgsConstructor
 @Component
@@ -19,7 +20,7 @@ public class RestaurantApprovalMessageKafkaPublisher implements RestaurantApprov
     @Override
     public void publish(RestaurantApprovalEvent restaurantApprovalEvent) {
         kafkaTemplate.send(
-                KafkaConst.RESTAURANT_APPROVAL_TOPIC,
+                RESTAURANT_APPROVAL_TOPIC,
                 mapper.eventToRestaurantApprovalRequestAvroModel(restaurantApprovalEvent)
         );
     }
