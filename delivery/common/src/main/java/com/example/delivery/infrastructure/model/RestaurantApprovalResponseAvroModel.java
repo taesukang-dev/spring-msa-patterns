@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2059123615045786950L;
+  private static final long serialVersionUID = -1685969047939728693L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RestaurantApprovalResponseAvroModel\",\"namespace\":\"com.example.delivery.infrastructure.model\",\"fields\":[{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"restaurantId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"deliveryAddress\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"result\",\"type\":\"boolean\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RestaurantApprovalResponseAvroModel\",\"namespace\":\"com.example.delivery.infrastructure.model\",\"fields\":[{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"restaurantId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"deliveryAddress\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"orderStatus\",\"type\":{\"type\":\"enum\",\"name\":\"RestaurantOrderStatus\",\"symbols\":[\"PENDING\",\"PAID\",\"APPROVED\",\"CANCELLED\"]}},{\"name\":\"result\",\"type\":\"boolean\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -81,6 +81,7 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
   private long userId;
   private java.util.UUID restaurantId;
   private java.lang.String deliveryAddress;
+  private com.example.delivery.infrastructure.model.RestaurantOrderStatus orderStatus;
   private boolean result;
 
   /**
@@ -97,14 +98,16 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
    * @param userId The new value for userId
    * @param restaurantId The new value for restaurantId
    * @param deliveryAddress The new value for deliveryAddress
+   * @param orderStatus The new value for orderStatus
    * @param result The new value for result
    */
-  public RestaurantApprovalResponseAvroModel(java.util.UUID orderId, java.util.UUID sagaId, java.lang.Long userId, java.util.UUID restaurantId, java.lang.String deliveryAddress, java.lang.Boolean result) {
+  public RestaurantApprovalResponseAvroModel(java.util.UUID orderId, java.util.UUID sagaId, java.lang.Long userId, java.util.UUID restaurantId, java.lang.String deliveryAddress, com.example.delivery.infrastructure.model.RestaurantOrderStatus orderStatus, java.lang.Boolean result) {
     this.orderId = orderId;
     this.sagaId = sagaId;
     this.userId = userId;
     this.restaurantId = restaurantId;
     this.deliveryAddress = deliveryAddress;
+    this.orderStatus = orderStatus;
     this.result = result;
   }
 
@@ -123,7 +126,8 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
     case 2: return userId;
     case 3: return restaurantId;
     case 4: return deliveryAddress;
-    case 5: return result;
+    case 5: return orderStatus;
+    case 6: return result;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -134,6 +138,7 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
       new org.apache.avro.Conversions.UUIDConversion(),
       null,
       new org.apache.avro.Conversions.UUIDConversion(),
+      null,
       null,
       null,
       null
@@ -154,7 +159,8 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
     case 2: userId = (java.lang.Long)value$; break;
     case 3: restaurantId = (java.util.UUID)value$; break;
     case 4: deliveryAddress = value$ != null ? value$.toString() : null; break;
-    case 5: result = (java.lang.Boolean)value$; break;
+    case 5: orderStatus = (com.example.delivery.infrastructure.model.RestaurantOrderStatus)value$; break;
+    case 6: result = (java.lang.Boolean)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -245,6 +251,23 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
   }
 
   /**
+   * Gets the value of the 'orderStatus' field.
+   * @return The value of the 'orderStatus' field.
+   */
+  public com.example.delivery.infrastructure.model.RestaurantOrderStatus getOrderStatus() {
+    return orderStatus;
+  }
+
+
+  /**
+   * Sets the value of the 'orderStatus' field.
+   * @param value the value to set.
+   */
+  public void setOrderStatus(com.example.delivery.infrastructure.model.RestaurantOrderStatus value) {
+    this.orderStatus = value;
+  }
+
+  /**
    * Gets the value of the 'result' field.
    * @return The value of the 'result' field.
    */
@@ -307,6 +330,7 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
     private long userId;
     private java.util.UUID restaurantId;
     private java.lang.String deliveryAddress;
+    private com.example.delivery.infrastructure.model.RestaurantOrderStatus orderStatus;
     private boolean result;
 
     /** Creates a new Builder */
@@ -340,9 +364,13 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
         this.deliveryAddress = data().deepCopy(fields()[4].schema(), other.deliveryAddress);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.result)) {
-        this.result = data().deepCopy(fields()[5].schema(), other.result);
+      if (isValidValue(fields()[5], other.orderStatus)) {
+        this.orderStatus = data().deepCopy(fields()[5].schema(), other.orderStatus);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
+      }
+      if (isValidValue(fields()[6], other.result)) {
+        this.result = data().deepCopy(fields()[6].schema(), other.result);
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
     }
 
@@ -372,9 +400,13 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
         this.deliveryAddress = data().deepCopy(fields()[4].schema(), other.deliveryAddress);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.result)) {
-        this.result = data().deepCopy(fields()[5].schema(), other.result);
+      if (isValidValue(fields()[5], other.orderStatus)) {
+        this.orderStatus = data().deepCopy(fields()[5].schema(), other.orderStatus);
         fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.result)) {
+        this.result = data().deepCopy(fields()[6].schema(), other.result);
+        fieldSetFlags()[6] = true;
       }
     }
 
@@ -578,6 +610,46 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
     }
 
     /**
+      * Gets the value of the 'orderStatus' field.
+      * @return The value.
+      */
+    public com.example.delivery.infrastructure.model.RestaurantOrderStatus getOrderStatus() {
+      return orderStatus;
+    }
+
+
+    /**
+      * Sets the value of the 'orderStatus' field.
+      * @param value The value of 'orderStatus'.
+      * @return This builder.
+      */
+    public com.example.delivery.infrastructure.model.RestaurantApprovalResponseAvroModel.Builder setOrderStatus(com.example.delivery.infrastructure.model.RestaurantOrderStatus value) {
+      validate(fields()[5], value);
+      this.orderStatus = value;
+      fieldSetFlags()[5] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'orderStatus' field has been set.
+      * @return True if the 'orderStatus' field has been set, false otherwise.
+      */
+    public boolean hasOrderStatus() {
+      return fieldSetFlags()[5];
+    }
+
+
+    /**
+      * Clears the value of the 'orderStatus' field.
+      * @return This builder.
+      */
+    public com.example.delivery.infrastructure.model.RestaurantApprovalResponseAvroModel.Builder clearOrderStatus() {
+      orderStatus = null;
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'result' field.
       * @return The value.
       */
@@ -592,9 +664,9 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.RestaurantApprovalResponseAvroModel.Builder setResult(boolean value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.result = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -603,7 +675,7 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
       * @return True if the 'result' field has been set, false otherwise.
       */
     public boolean hasResult() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -612,7 +684,7 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.RestaurantApprovalResponseAvroModel.Builder clearResult() {
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -626,7 +698,8 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
         record.userId = fieldSetFlags()[2] ? this.userId : (java.lang.Long) defaultValue(fields()[2]);
         record.restaurantId = fieldSetFlags()[3] ? this.restaurantId : (java.util.UUID) defaultValue(fields()[3]);
         record.deliveryAddress = fieldSetFlags()[4] ? this.deliveryAddress : (java.lang.String) defaultValue(fields()[4]);
-        record.result = fieldSetFlags()[5] ? this.result : (java.lang.Boolean) defaultValue(fields()[5]);
+        record.orderStatus = fieldSetFlags()[5] ? this.orderStatus : (com.example.delivery.infrastructure.model.RestaurantOrderStatus) defaultValue(fields()[5]);
+        record.result = fieldSetFlags()[6] ? this.result : (java.lang.Boolean) defaultValue(fields()[6]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;

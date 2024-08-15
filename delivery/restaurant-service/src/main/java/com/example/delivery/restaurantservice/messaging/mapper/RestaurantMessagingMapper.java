@@ -2,6 +2,7 @@ package com.example.delivery.restaurantservice.messaging.mapper;
 
 import com.example.delivery.infrastructure.model.RestaurantApprovalRequestAvroModel;
 import com.example.delivery.infrastructure.model.RestaurantApprovalResponseAvroModel;
+import com.example.delivery.infrastructure.model.RestaurantOrderStatus;
 import com.example.delivery.infrastructure.vo.OrderStatus;
 import com.example.delivery.restaurantservice.application.dto.RestaurantApprovalRequest;
 import com.example.delivery.restaurantservice.core.event.RestaurantApprovalResponseEvent;
@@ -33,6 +34,11 @@ public class RestaurantMessagingMapper {
                 .setOrderId(event.getOrderId())
                 .setUserId(event.getUserId())
                 .setRestaurantId(event.getRestaurantId())
+                .setOrderStatus(
+                        RestaurantOrderStatus.valueOf(
+                                event.getOrderStatus().toString()
+                        )
+                )
                 .setResult(event.isResult())
                 .build();
     }

@@ -1,0 +1,47 @@
+{
+  "type": "record",
+  "name": "OrderPaymentAvroModel",
+  "namespace": "com.example.delivery.infrastructure.model",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "sagaId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "createdAt",
+      "type": "long",
+      "logicalType": "timestamp-millis"
+    },
+    {
+      "name": "outboxStatus",
+      "type": "string"
+    },
+    {
+      "name": "totalPrice",
+        "type": {
+            "type": "bytes",
+            "logicalType": "decimal",
+            "precision": 10,
+            "scale": 2
+        }
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "version",
+      "type": "long"
+    }
+  ]
+}

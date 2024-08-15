@@ -33,6 +33,14 @@
       "type": "string"
     },
     {
+      "name": "orderStatus",
+      "type": {
+        "type": "enum",
+        "name": "RestaurantOrderStatus",
+        "symbols": ["PENDING", "PAID", "APPROVED", "CANCELLED"]
+      }
+    },
+    {
       "name": "result",
       "type": "boolean"
     }

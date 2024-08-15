@@ -7,6 +7,9 @@ import com.example.delivery.orderservice.dataaccess.repository.RestaurantApprova
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Repository
 public class RestaurantApprovalOutboxMessageRepositoryImpl implements RestaurantApprovalOutboxMessageRepository {
@@ -21,5 +24,11 @@ public class RestaurantApprovalOutboxMessageRepositoryImpl implements Restaurant
                         mapper.restaurantOutboxMessageToEntity(outboxMessage)
                 )
         );
+    }
+
+    @Override
+    public Optional<RestaurantApprovalOutboxMessage> findBySagaId(UUID sagaId) {
+        return repository.findBySagaId(sagaId)
+                .map(mapper::restaurantOutboxMessageEntityToMessage);
     }
 }

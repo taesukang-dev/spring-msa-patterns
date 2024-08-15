@@ -2,9 +2,11 @@ package com.example.delivery.orderservice.application.mapper;
 
 import com.example.delivery.orderservice.application.dto.OrderCommand;
 import com.example.delivery.orderservice.application.dto.OrderItemCommand;
+import com.example.delivery.orderservice.application.outbox.OrderPaymentOutboxMessage;
 import com.example.delivery.orderservice.application.outbox.RestaurantApprovalOutboxMessage;
 import com.example.delivery.orderservice.core.entity.Order;
 import com.example.delivery.orderservice.core.entity.OrderItem;
+import com.example.delivery.orderservice.core.event.OrderPaymentEvent;
 import com.example.delivery.orderservice.core.event.RestaurantApprovalEvent;
 import com.example.delivery.outbox.OutboxStatus;
 import org.springframework.stereotype.Component;
@@ -65,5 +67,18 @@ public class OrderDataMapper {
                 .orderStatus(order.getOrderStatus())
                 .build();
     }
+
+    public OrderPaymentEvent outboxMessageToOrderPaymentEvent(OrderPaymentOutboxMessage message) {
+        return OrderPaymentEvent.builder()
+                .id(message.getId())
+                .sagaId(message.getSagaId())
+                .createdAt(message.getCreatedAt())
+                .outboxStatus(message.getOutboxStatus())
+                .totalPrice(message.getTotalPrice())
+                .userId(message.getUserId())
+                .version(message.getVersion())
+                .build();
+    }
+
 
 }

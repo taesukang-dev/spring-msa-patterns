@@ -51,6 +51,7 @@ public class RestaurantApprovalRequestMessageListenerImpl implements RestaurantA
                         .orderId(restaurantApprovalRequest.getOrderId())
                         .userId(restaurantApprovalRequest.getUserId())
                         .restaurantId(restaurantApprovalRequest.getRestaurantId())
+                        .orderStatus(restaurantApprovalRequest.getOrderStatus())
                         .result(restaurant.isAvailable())
                         .build()
         );

@@ -1,12 +1,15 @@
 package com.example.delivery.orderservice.dataaccess.mapper;
 
 import com.example.delivery.orderservice.application.outbox.OrderApprovalOutboxMessage;
+import com.example.delivery.orderservice.application.outbox.OrderPaymentOutboxMessage;
 import com.example.delivery.orderservice.application.outbox.RestaurantApprovalOutboxMessage;
 import com.example.delivery.orderservice.core.entity.Order;
 import com.example.delivery.orderservice.core.entity.OrderItem;
+import com.example.delivery.orderservice.core.event.OrderPaymentEvent;
 import com.example.delivery.orderservice.dataaccess.entity.OrderEntity;
 import com.example.delivery.orderservice.dataaccess.entity.OrderItemEntity;
 import com.example.delivery.orderservice.dataaccess.entity.outbox.OrderApprovalOutboxMessageEntity;
+import com.example.delivery.orderservice.dataaccess.entity.outbox.OrderPaymentOutboxMessageEntity;
 import com.example.delivery.orderservice.dataaccess.entity.outbox.RestaurantApprovalOutboxMessageEntity;
 import org.springframework.stereotype.Component;
 
@@ -126,5 +129,30 @@ public class OrderDataAccessMapper {
                 .version(message.getVersion())
                 .build();
     }
+
+    public OrderPaymentOutboxMessageEntity messageToOrderPaymentOutboxMessageEntity(OrderPaymentOutboxMessage message) {
+        return OrderPaymentOutboxMessageEntity.builder()
+                .id(message.getId())
+                .sagaId(message.getSagaId())
+                .createdAt(message.getCreatedAt())
+                .outboxStatus(message.getOutboxStatus())
+                .totalPrice(message.getTotalPrice())
+                .userId(message.getUserId())
+                .version(message.getVersion())
+                .build();
+    }
+
+    public OrderPaymentOutboxMessage entityToOrderPaymentOutboxMessage(OrderPaymentOutboxMessageEntity entity) {
+        return OrderPaymentOutboxMessage.builder()
+                .id(entity.getId())
+                .sagaId(entity.getSagaId())
+                .createdAt(entity.getCreatedAt())
+                .outboxStatus(entity.getOutboxStatus())
+                .totalPrice(entity.getTotalPrice())
+                .userId(entity.getUserId())
+                .version(entity.getVersion())
+                .build();
+    }
+
 
 }
