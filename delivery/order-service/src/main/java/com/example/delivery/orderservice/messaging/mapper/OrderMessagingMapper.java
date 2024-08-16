@@ -52,6 +52,7 @@ public class OrderMessagingMapper {
     public OrderPaymentAvroModel eventToAvroModel(OrderPaymentEvent event) {
         return OrderPaymentAvroModel.newBuilder()
                 .setId(event.getId())
+                .setOrderId(event.getOrderId())
                 .setSagaId(event.getSagaId())
                 .setCreatedAt(
                         event.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().getEpochSecond()
@@ -66,6 +67,7 @@ public class OrderMessagingMapper {
     public PaymentResponse avroModelToPaymentResponse(OrderPaymentResponseAvroModel avroModel) {
         return PaymentResponse.builder()
                 .id(avroModel.getId())
+                .orderId(avroModel.getOrderId())
                 .sagaId(avroModel.getSagaId())
                 .createdAt(
                         LocalDateTime.ofInstant(

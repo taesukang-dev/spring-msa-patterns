@@ -5,11 +5,13 @@ import com.example.delivery.restaurantservice.application.ports.input.Restaurant
 import com.example.delivery.restaurantservice.application.ports.output.RestaurantRepository;
 import com.example.delivery.restaurantservice.core.entity.Restaurant;
 import com.example.delivery.restaurantservice.core.event.RestaurantApprovalResponseEvent;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 
+import static com.example.delivery.infrastructure.vo.OrderStatus.PAID;
 import static com.example.delivery.infrastructure.vo.OrderStatus.PENDING;
 
 @RequiredArgsConstructor
@@ -20,9 +22,9 @@ public class RestaurantApprovalRequestMessageListenerImpl implements RestaurantA
     private final ApplicationEventPublisher publisher;
 
     @Override
-    // TODO Transactional 로 묶어야 함
+    @Transactional
     public void approveOrder(RestaurantApprovalRequest restaurantApprovalRequest) {
-        if (!restaurantApprovalRequest.getOrderStatus().equals(PENDING)) {
+        if (!restaurantApprovalRequest.getOrderStatus().equals(PAID)) {
             throw new RuntimeException("ApprovalRequest is not in correct state for operation");
         }
 
@@ -31,19 +33,6 @@ public class RestaurantApprovalRequestMessageListenerImpl implements RestaurantA
                 restaurantApprovalRequest.getProductIds()
         ).orElseThrow(() -> new RuntimeException("Restaurant Not Found"));
 
-//        oaOutboxRepository.save(
-//            OrderApprovalOutboxMessage.builder()
-//                    .id(UUID.randomUUID())
-//                    .sagaId(restaurantApprovalRequest.getSagaId())
-//                    .orderId(restaurantApprovalRequest.getOrderId())
-//                    .userId(restaurantApprovalRequest.getUserId())
-//                    .restaurantId(restaurantApprovalRequest.getRestaurantId())
-//                    .orderStatus(restaurantApprovalRequest.getOrderStatus())
-//                    .outboxStatus(OutboxStatus.STARTED)
-//                    .build()
-//        );
-
-        // TODO : Move to Helper
         publisher.publishEvent(
                 RestaurantApprovalResponseEvent
                         .builder()

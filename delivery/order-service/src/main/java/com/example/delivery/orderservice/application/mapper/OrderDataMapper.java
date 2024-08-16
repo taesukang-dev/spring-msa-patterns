@@ -71,6 +71,7 @@ public class OrderDataMapper {
     public OrderPaymentEvent outboxMessageToOrderPaymentEvent(OrderPaymentOutboxMessage message) {
         return OrderPaymentEvent.builder()
                 .id(message.getId())
+                .orderId(message.getOrderId())
                 .sagaId(message.getSagaId())
                 .createdAt(message.getCreatedAt())
                 .outboxStatus(message.getOutboxStatus())

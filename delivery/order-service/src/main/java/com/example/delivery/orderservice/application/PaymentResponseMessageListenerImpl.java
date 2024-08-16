@@ -5,18 +5,23 @@ import com.example.delivery.orderservice.application.ports.input.PaymentResponse
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Component
 public class PaymentResponseMessageListenerImpl implements PaymentResponseMessageListener {
 
+    private final SagaHelper sagaHelper;
+
     @Override
     public void paymentApproved(PaymentResponse paymentResponse) {
-        // outbox completed
-        // restaurant -> approval request
+        sagaHelper.completePayment(paymentResponse);
     }
 
     @Override
     public void paymentRejected(PaymentResponse paymentResponse) {
-
+        sagaHelper.cancelPayment(paymentResponse);
     }
+
+    // TODO : Scheduler -> Failed counting??
 }

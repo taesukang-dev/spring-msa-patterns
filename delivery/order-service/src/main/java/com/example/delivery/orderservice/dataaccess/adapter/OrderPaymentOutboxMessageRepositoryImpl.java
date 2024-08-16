@@ -7,6 +7,9 @@ import com.example.delivery.orderservice.dataaccess.repository.OrderPaymentOutbo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class OrderPaymentOutboxMessageRepositoryImpl implements OrderPaymentOutboxMessageRepository {
@@ -21,5 +24,11 @@ public class OrderPaymentOutboxMessageRepositoryImpl implements OrderPaymentOutb
                         mapper.messageToOrderPaymentOutboxMessageEntity(orderPaymentOutboxMessage)
                 )
         );
+    }
+
+    @Override
+    public Optional<OrderPaymentOutboxMessage> findById(UUID id) {
+        return repository.findById(id)
+                .map(mapper::entityToOrderPaymentOutboxMessage);
     }
 }

@@ -55,12 +55,12 @@ services:
     networks:
       - kafka-net
 
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    networks:
-      - kafka-net
+#  redis:
+#    image: redis:latest
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - kafka-net
 
   mysql:
     image: mysql:latest
@@ -71,6 +71,17 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+    restart: always
+
+  mysql-sink:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: delivery
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-sink:/var/lib/mysql
     restart: always
 
 networks:

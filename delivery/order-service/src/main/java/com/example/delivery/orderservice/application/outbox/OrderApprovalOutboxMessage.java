@@ -22,4 +22,9 @@ public class OrderApprovalOutboxMessage {
     private OrderStatus orderStatus;
     private OutboxStatus outboxStatus;
     private Long version;
+
+    public OrderApprovalOutboxMessage updateStatus(OutboxStatus outboxStatus) {
+        this.outboxStatus = outboxStatus;
+        return this;
+    }
 }

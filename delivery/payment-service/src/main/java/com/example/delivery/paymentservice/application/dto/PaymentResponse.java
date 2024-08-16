@@ -14,6 +14,7 @@ import java.util.UUID;
 @Builder
 public class PaymentResponse {
     private UUID id;
+    private UUID orderId;
     private UUID sagaId;
     private LocalDateTime createdAt;
     private OutboxStatus outboxStatus;

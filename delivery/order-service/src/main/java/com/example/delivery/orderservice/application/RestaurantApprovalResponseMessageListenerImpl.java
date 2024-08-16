@@ -23,29 +23,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Component
 public class RestaurantApprovalResponseMessageListenerImpl implements RestaurantApprovalResponseMessageListener {
-
-    private final OrderDataMapper mapper;
-    private final OrderRepository orderRepository;
-    private final ApplicationEventPublisher publisher;
-    private final RestaurantApprovalOutboxMessageRepository restaurantApprovalOutboxMessageRepository;
+    private final SagaHelper sagaHelper;
 
     @Override
-    // TODO Fix All
-    // TODO : Move to Saga Helper
-    // This method will be removed due to the use of the cqrs
     public void orderApproved(RestaurantApprovalResponse restaurantApprovalResponse) {
-        // TODO : restaurant approval -> Outbox Complete
-        RestaurantApprovalOutboxMessage outboxMessage = restaurantApprovalOutboxMessageRepository
-                .findBySagaId(restaurantApprovalResponse.getSagaId())
-                .orElseThrow(() -> new RuntimeException("Outbox Message Not Found"));
-        Order order = orderRepository.findById(restaurantApprovalResponse.getOrderId())
-                .orElseThrow(() -> new RuntimeException("Order Not Found"));
-
-        OrderStatus orderStatus = outboxMessage.getOrderStatus();
-        restaurantApprovalOutboxMessageRepository
-                .save(outboxMessage.updateStatus(OutboxStatus.COMPLETED));
+        sagaHelper.completeOrder(restaurantApprovalResponse);
     }
-    // TODO : 2. 주문
+
+    // TODO : Scheduler -> Failed counting??
 
     @Override
     public void orderRejected(RestaurantApprovalResponse restaurantApprovalResponse) {

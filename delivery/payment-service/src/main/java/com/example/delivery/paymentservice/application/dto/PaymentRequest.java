@@ -16,6 +16,7 @@ import java.util.UUID;
 @Getter
 public class PaymentRequest {
     private UUID id;
+    private UUID orderId;
     private UUID sagaId;
     private LocalDateTime createdAt;
     private OutboxStatus outboxStatus;

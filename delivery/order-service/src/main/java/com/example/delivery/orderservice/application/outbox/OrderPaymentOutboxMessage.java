@@ -12,10 +12,16 @@ import java.util.UUID;
 @Builder
 public class OrderPaymentOutboxMessage {
     private UUID id;
+    private UUID orderId;
     private UUID sagaId;
     private LocalDateTime createdAt;
     private OutboxStatus outboxStatus;
     private BigDecimal totalPrice;
     private Long userId;
     private Long version;
+
+    public OrderPaymentOutboxMessage updateStatus(OutboxStatus outboxStatus) {
+        this.outboxStatus = outboxStatus;
+        return this;
+    }
 }

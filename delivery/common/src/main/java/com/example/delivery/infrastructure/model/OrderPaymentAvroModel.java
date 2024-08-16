@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2350876401227999400L;
+  private static final long serialVersionUID = -513283709007447155L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderPaymentAvroModel\",\"namespace\":\"com.example.delivery.infrastructure.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"outboxStatus\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"totalPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"version\",\"type\":\"long\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderPaymentAvroModel\",\"namespace\":\"com.example.delivery.infrastructure.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"outboxStatus\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"totalPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"version\",\"type\":\"long\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -78,6 +78,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
   }
 
   private java.util.UUID id;
+  private java.util.UUID orderId;
   private java.util.UUID sagaId;
   private long createdAt;
   private java.lang.String outboxStatus;
@@ -95,6 +96,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
   /**
    * All-args constructor.
    * @param id The new value for id
+   * @param orderId The new value for orderId
    * @param sagaId The new value for sagaId
    * @param createdAt The new value for createdAt
    * @param outboxStatus The new value for outboxStatus
@@ -102,8 +104,9 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
    * @param userId The new value for userId
    * @param version The new value for version
    */
-  public OrderPaymentAvroModel(java.util.UUID id, java.util.UUID sagaId, java.lang.Long createdAt, java.lang.String outboxStatus, java.math.BigDecimal totalPrice, java.lang.Long userId, java.lang.Long version) {
+  public OrderPaymentAvroModel(java.util.UUID id, java.util.UUID orderId, java.util.UUID sagaId, java.lang.Long createdAt, java.lang.String outboxStatus, java.math.BigDecimal totalPrice, java.lang.Long userId, java.lang.Long version) {
     this.id = id;
+    this.orderId = orderId;
     this.sagaId = sagaId;
     this.createdAt = createdAt;
     this.outboxStatus = outboxStatus;
@@ -123,18 +126,20 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return id;
-    case 1: return sagaId;
-    case 2: return createdAt;
-    case 3: return outboxStatus;
-    case 4: return totalPrice;
-    case 5: return userId;
-    case 6: return version;
+    case 1: return orderId;
+    case 2: return sagaId;
+    case 3: return createdAt;
+    case 4: return outboxStatus;
+    case 5: return totalPrice;
+    case 6: return userId;
+    case 7: return version;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   private static final org.apache.avro.Conversion<?>[] conversions =
       new org.apache.avro.Conversion<?>[] {
+      new org.apache.avro.Conversions.UUIDConversion(),
       new org.apache.avro.Conversions.UUIDConversion(),
       new org.apache.avro.Conversions.UUIDConversion(),
       null,
@@ -156,12 +161,13 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = (java.util.UUID)value$; break;
-    case 1: sagaId = (java.util.UUID)value$; break;
-    case 2: createdAt = (java.lang.Long)value$; break;
-    case 3: outboxStatus = value$ != null ? value$.toString() : null; break;
-    case 4: totalPrice = (java.math.BigDecimal)value$; break;
-    case 5: userId = (java.lang.Long)value$; break;
-    case 6: version = (java.lang.Long)value$; break;
+    case 1: orderId = (java.util.UUID)value$; break;
+    case 2: sagaId = (java.util.UUID)value$; break;
+    case 3: createdAt = (java.lang.Long)value$; break;
+    case 4: outboxStatus = value$ != null ? value$.toString() : null; break;
+    case 5: totalPrice = (java.math.BigDecimal)value$; break;
+    case 6: userId = (java.lang.Long)value$; break;
+    case 7: version = (java.lang.Long)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -181,6 +187,23 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
    */
   public void setId(java.util.UUID value) {
     this.id = value;
+  }
+
+  /**
+   * Gets the value of the 'orderId' field.
+   * @return The value of the 'orderId' field.
+   */
+  public java.util.UUID getOrderId() {
+    return orderId;
+  }
+
+
+  /**
+   * Sets the value of the 'orderId' field.
+   * @param value the value to set.
+   */
+  public void setOrderId(java.util.UUID value) {
+    this.orderId = value;
   }
 
   /**
@@ -327,6 +350,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
     implements org.apache.avro.data.RecordBuilder<OrderPaymentAvroModel> {
 
     private java.util.UUID id;
+    private java.util.UUID orderId;
     private java.util.UUID sagaId;
     private long createdAt;
     private java.lang.String outboxStatus;
@@ -349,29 +373,33 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.sagaId)) {
-        this.sagaId = data().deepCopy(fields()[1].schema(), other.sagaId);
+      if (isValidValue(fields()[1], other.orderId)) {
+        this.orderId = data().deepCopy(fields()[1].schema(), other.orderId);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[2].schema(), other.createdAt);
+      if (isValidValue(fields()[2], other.sagaId)) {
+        this.sagaId = data().deepCopy(fields()[2].schema(), other.sagaId);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.outboxStatus)) {
-        this.outboxStatus = data().deepCopy(fields()[3].schema(), other.outboxStatus);
+      if (isValidValue(fields()[3], other.createdAt)) {
+        this.createdAt = data().deepCopy(fields()[3].schema(), other.createdAt);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.totalPrice)) {
-        this.totalPrice = data().deepCopy(fields()[4].schema(), other.totalPrice);
+      if (isValidValue(fields()[4], other.outboxStatus)) {
+        this.outboxStatus = data().deepCopy(fields()[4].schema(), other.outboxStatus);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.userId)) {
-        this.userId = data().deepCopy(fields()[5].schema(), other.userId);
+      if (isValidValue(fields()[5], other.totalPrice)) {
+        this.totalPrice = data().deepCopy(fields()[5].schema(), other.totalPrice);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.version)) {
-        this.version = data().deepCopy(fields()[6].schema(), other.version);
+      if (isValidValue(fields()[6], other.userId)) {
+        this.userId = data().deepCopy(fields()[6].schema(), other.userId);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
+      }
+      if (isValidValue(fields()[7], other.version)) {
+        this.version = data().deepCopy(fields()[7].schema(), other.version);
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
     }
 
@@ -385,29 +413,33 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.sagaId)) {
-        this.sagaId = data().deepCopy(fields()[1].schema(), other.sagaId);
+      if (isValidValue(fields()[1], other.orderId)) {
+        this.orderId = data().deepCopy(fields()[1].schema(), other.orderId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[2].schema(), other.createdAt);
+      if (isValidValue(fields()[2], other.sagaId)) {
+        this.sagaId = data().deepCopy(fields()[2].schema(), other.sagaId);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.outboxStatus)) {
-        this.outboxStatus = data().deepCopy(fields()[3].schema(), other.outboxStatus);
+      if (isValidValue(fields()[3], other.createdAt)) {
+        this.createdAt = data().deepCopy(fields()[3].schema(), other.createdAt);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.totalPrice)) {
-        this.totalPrice = data().deepCopy(fields()[4].schema(), other.totalPrice);
+      if (isValidValue(fields()[4], other.outboxStatus)) {
+        this.outboxStatus = data().deepCopy(fields()[4].schema(), other.outboxStatus);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.userId)) {
-        this.userId = data().deepCopy(fields()[5].schema(), other.userId);
+      if (isValidValue(fields()[5], other.totalPrice)) {
+        this.totalPrice = data().deepCopy(fields()[5].schema(), other.totalPrice);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.version)) {
-        this.version = data().deepCopy(fields()[6].schema(), other.version);
+      if (isValidValue(fields()[6], other.userId)) {
+        this.userId = data().deepCopy(fields()[6].schema(), other.userId);
         fieldSetFlags()[6] = true;
+      }
+      if (isValidValue(fields()[7], other.version)) {
+        this.version = data().deepCopy(fields()[7].schema(), other.version);
+        fieldSetFlags()[7] = true;
       }
     }
 
@@ -452,6 +484,46 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
     }
 
     /**
+      * Gets the value of the 'orderId' field.
+      * @return The value.
+      */
+    public java.util.UUID getOrderId() {
+      return orderId;
+    }
+
+
+    /**
+      * Sets the value of the 'orderId' field.
+      * @param value The value of 'orderId'.
+      * @return This builder.
+      */
+    public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder setOrderId(java.util.UUID value) {
+      validate(fields()[1], value);
+      this.orderId = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'orderId' field has been set.
+      * @return True if the 'orderId' field has been set, false otherwise.
+      */
+    public boolean hasOrderId() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'orderId' field.
+      * @return This builder.
+      */
+    public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder clearOrderId() {
+      orderId = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'sagaId' field.
       * @return The value.
       */
@@ -466,9 +538,9 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder setSagaId(java.util.UUID value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.sagaId = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -477,7 +549,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return True if the 'sagaId' field has been set, false otherwise.
       */
     public boolean hasSagaId() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -487,7 +559,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder clearSagaId() {
       sagaId = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -506,9 +578,9 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder setCreatedAt(long value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.createdAt = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -517,7 +589,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return True if the 'createdAt' field has been set, false otherwise.
       */
     public boolean hasCreatedAt() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -526,7 +598,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder clearCreatedAt() {
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -545,9 +617,9 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder setOutboxStatus(java.lang.String value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.outboxStatus = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -556,7 +628,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return True if the 'outboxStatus' field has been set, false otherwise.
       */
     public boolean hasOutboxStatus() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -566,7 +638,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder clearOutboxStatus() {
       outboxStatus = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -585,9 +657,9 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder setTotalPrice(java.math.BigDecimal value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.totalPrice = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -596,7 +668,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return True if the 'totalPrice' field has been set, false otherwise.
       */
     public boolean hasTotalPrice() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -606,7 +678,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder clearTotalPrice() {
       totalPrice = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -625,9 +697,9 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder setUserId(long value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.userId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -636,7 +708,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return True if the 'userId' field has been set, false otherwise.
       */
     public boolean hasUserId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -645,7 +717,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder clearUserId() {
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -664,9 +736,9 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder setVersion(long value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.version = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -675,7 +747,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return True if the 'version' field has been set, false otherwise.
       */
     public boolean hasVersion() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -684,7 +756,7 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder clearVersion() {
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -694,12 +766,13 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       try {
         OrderPaymentAvroModel record = new OrderPaymentAvroModel();
         record.id = fieldSetFlags()[0] ? this.id : (java.util.UUID) defaultValue(fields()[0]);
-        record.sagaId = fieldSetFlags()[1] ? this.sagaId : (java.util.UUID) defaultValue(fields()[1]);
-        record.createdAt = fieldSetFlags()[2] ? this.createdAt : (java.lang.Long) defaultValue(fields()[2]);
-        record.outboxStatus = fieldSetFlags()[3] ? this.outboxStatus : (java.lang.String) defaultValue(fields()[3]);
-        record.totalPrice = fieldSetFlags()[4] ? this.totalPrice : (java.math.BigDecimal) defaultValue(fields()[4]);
-        record.userId = fieldSetFlags()[5] ? this.userId : (java.lang.Long) defaultValue(fields()[5]);
-        record.version = fieldSetFlags()[6] ? this.version : (java.lang.Long) defaultValue(fields()[6]);
+        record.orderId = fieldSetFlags()[1] ? this.orderId : (java.util.UUID) defaultValue(fields()[1]);
+        record.sagaId = fieldSetFlags()[2] ? this.sagaId : (java.util.UUID) defaultValue(fields()[2]);
+        record.createdAt = fieldSetFlags()[3] ? this.createdAt : (java.lang.Long) defaultValue(fields()[3]);
+        record.outboxStatus = fieldSetFlags()[4] ? this.outboxStatus : (java.lang.String) defaultValue(fields()[4]);
+        record.totalPrice = fieldSetFlags()[5] ? this.totalPrice : (java.math.BigDecimal) defaultValue(fields()[5]);
+        record.userId = fieldSetFlags()[6] ? this.userId : (java.lang.Long) defaultValue(fields()[6]);
+        record.version = fieldSetFlags()[7] ? this.version : (java.lang.Long) defaultValue(fields()[7]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
