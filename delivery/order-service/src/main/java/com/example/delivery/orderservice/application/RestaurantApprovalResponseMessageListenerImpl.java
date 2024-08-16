@@ -27,10 +27,10 @@ public class RestaurantApprovalResponseMessageListenerImpl implements Restaurant
     private final OrderDataMapper mapper;
     private final OrderRepository orderRepository;
     private final ApplicationEventPublisher publisher;
-    private final OrderPaymentOutboxMessageRepository orderPaymentOutboxMessageRepository;
     private final RestaurantApprovalOutboxMessageRepository restaurantApprovalOutboxMessageRepository;
 
     @Override
+    // TODO Fix All
     // TODO : Move to Saga Helper
     // This method will be removed due to the use of the cqrs
     public void orderApproved(RestaurantApprovalResponse restaurantApprovalResponse) {
@@ -42,30 +42,8 @@ public class RestaurantApprovalResponseMessageListenerImpl implements Restaurant
                 .orElseThrow(() -> new RuntimeException("Order Not Found"));
 
         OrderStatus orderStatus = outboxMessage.getOrderStatus();
-        // It goes pending -> paid -> approved
-        if (!orderStatus.equals(OrderStatus.PENDING)) {
-            throw new RuntimeException("Not Available Order Status");
-        }
         restaurantApprovalOutboxMessageRepository
                 .save(outboxMessage.updateStatus(OutboxStatus.COMPLETED));
-
-        // TODO : payment approval -> outbox started
-        BigDecimal totalPrice = order.getTotalPrice();
-        Long userId = order.getUserId();
-        OrderPaymentOutboxMessage paymentOutboxMessage = orderPaymentOutboxMessageRepository.save(
-                OrderPaymentOutboxMessage
-                        .builder()
-                        .id(UUID.randomUUID())
-                        .sagaId(restaurantApprovalResponse.getSagaId())
-                        .outboxStatus(OutboxStatus.STARTED)
-                        .totalPrice(totalPrice)
-                        .userId(userId)
-                        .build()
-        );
-        // TODO : 1. pay
-        publisher.publishEvent(
-                mapper.outboxMessageToOrderPaymentEvent(paymentOutboxMessage)
-        );
     }
     // TODO : 2. 주문
 

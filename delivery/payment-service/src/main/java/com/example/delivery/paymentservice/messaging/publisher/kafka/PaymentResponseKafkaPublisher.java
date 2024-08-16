@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import static com.example.delivery.infrastructure.kafka.KafkaConst.PAYMENT_RESULT_TOPIC;
+import static com.example.delivery.infrastructure.kafka.KafkaConst.PAYMENT_RESPONSE_TOPIC;
 
 @RequiredArgsConstructor
 @Component
@@ -20,7 +20,7 @@ public class PaymentResponseKafkaPublisher implements PaymentResponseMessagePubl
     @Override
     public void send(PaymentResponse paymentResponse) {
         kafkaTemplate.send(
-                PAYMENT_RESULT_TOPIC,
+                PAYMENT_RESPONSE_TOPIC,
                 mapper.paymentResponseToAvroModel(paymentResponse)
         );
     }

@@ -1,15 +1,16 @@
 package com.example.delivery.orderservice.messaging.mapper;
 
-import com.example.delivery.infrastructure.model.OrderPaymentAvroModel;
-import com.example.delivery.infrastructure.model.RestaurantApprovalRequestAvroModel;
-import com.example.delivery.infrastructure.model.RestaurantApprovalResponseAvroModel;
-import com.example.delivery.infrastructure.model.RestaurantOrderStatus;
+import com.example.delivery.infrastructure.model.*;
 import com.example.delivery.infrastructure.vo.OrderStatus;
+import com.example.delivery.orderservice.application.dto.PaymentResponse;
 import com.example.delivery.orderservice.application.dto.RestaurantApprovalResponse;
 import com.example.delivery.orderservice.core.event.OrderPaymentEvent;
 import com.example.delivery.orderservice.core.event.RestaurantApprovalEvent;
+import com.example.delivery.outbox.OutboxStatus;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
@@ -59,6 +60,24 @@ public class OrderMessagingMapper {
                 .setTotalPrice(event.getTotalPrice())
                 .setUserId(event.getUserId())
                 .setVersion(event.getVersion())
+                .build();
+    }
+
+    public PaymentResponse avroModelToPaymentResponse(OrderPaymentResponseAvroModel avroModel) {
+        return PaymentResponse.builder()
+                .id(avroModel.getId())
+                .sagaId(avroModel.getSagaId())
+                .createdAt(
+                        LocalDateTime.ofInstant(
+                                Instant.ofEpochMilli(avroModel.getCreatedAt()),
+                                ZoneId.of("Asia/Seoul")
+                        )
+                )
+                .outboxStatus(OutboxStatus.valueOf(avroModel.getOutboxStatus()))
+                .totalPrice(avroModel.getTotalPrice())
+                .userId(avroModel.getUserId())
+                .version(avroModel.getVersion())
+                .result(avroModel.getResult())
                 .build();
     }
 }
