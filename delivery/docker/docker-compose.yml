@@ -62,6 +62,17 @@ services:
     networks:
       - kafka-net
 
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: delivery
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+
 networks:
   kafka-net:
     driver: bridge
