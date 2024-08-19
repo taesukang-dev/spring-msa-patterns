@@ -18,7 +18,7 @@ public class PaymentResponseKafkaListener {
     private final OrderMessagingMapper mapper;
     private final PaymentResponseMessageListener messageListener;
 
-    @KafkaListener(topics = PAYMENT_RESPONSE_TOPIC)
+    @KafkaListener(topics = PAYMENT_RESPONSE_TOPIC, groupId = "spring")
     public void consumer(@Payload OrderPaymentResponseAvroModel paymentResponseAvroModel) {
         PaymentResponse response = mapper.avroModelToPaymentResponse(paymentResponseAvroModel);
         if (response.isResult()) {

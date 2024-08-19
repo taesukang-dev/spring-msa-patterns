@@ -2,11 +2,15 @@ package com.example.delivery.orderservice.application.mapper;
 
 import com.example.delivery.orderservice.application.dto.OrderCommand;
 import com.example.delivery.orderservice.application.dto.OrderItemCommand;
+import com.example.delivery.orderservice.application.dto.PaymentResponse;
+import com.example.delivery.orderservice.application.dto.RestaurantApprovalResponse;
 import com.example.delivery.orderservice.application.outbox.OrderPaymentOutboxMessage;
 import com.example.delivery.orderservice.application.outbox.RestaurantApprovalOutboxMessage;
 import com.example.delivery.orderservice.core.entity.Order;
 import com.example.delivery.orderservice.core.entity.OrderItem;
+import com.example.delivery.orderservice.core.event.CancelOrderEvent;
 import com.example.delivery.orderservice.core.event.OrderPaymentEvent;
+import com.example.delivery.orderservice.core.event.PaymentCompensateEvent;
 import com.example.delivery.orderservice.core.event.RestaurantApprovalEvent;
 import com.example.delivery.outbox.OutboxStatus;
 import org.springframework.stereotype.Component;
@@ -78,6 +82,24 @@ public class OrderDataMapper {
                 .totalPrice(message.getTotalPrice())
                 .userId(message.getUserId())
                 .version(message.getVersion())
+                .build();
+    }
+
+    public PaymentCompensateEvent responseToPaymentCompensateEvent(PaymentResponse response) {
+        return PaymentCompensateEvent.builder()
+                .orderId(response.getOrderId())
+                .sagaId(response.getSagaId())
+                .userId(response.getUserId())
+                .result(response.isResult())
+                .build();
+    }
+
+    public CancelOrderEvent responseToPaymentCompensateEvent(RestaurantApprovalResponse response) {
+        return CancelOrderEvent.builder()
+                .orderId(response.getOrderId())
+                .sagaId(response.getSagaId())
+                .userId(response.getUserId())
+                .result(response.isResult())
                 .build();
     }
 

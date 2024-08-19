@@ -5,14 +5,18 @@ import com.example.delivery.orderservice.application.outbox.OrderPaymentOutboxMe
 import com.example.delivery.orderservice.application.outbox.RestaurantApprovalOutboxMessage;
 import com.example.delivery.orderservice.core.entity.Order;
 import com.example.delivery.orderservice.core.entity.OrderItem;
+import com.example.delivery.orderservice.core.entity.Product;
+import com.example.delivery.orderservice.core.entity.Restaurant;
 import com.example.delivery.orderservice.core.event.OrderPaymentEvent;
 import com.example.delivery.orderservice.dataaccess.entity.OrderEntity;
 import com.example.delivery.orderservice.dataaccess.entity.OrderItemEntity;
 import com.example.delivery.orderservice.dataaccess.entity.outbox.OrderApprovalOutboxMessageEntity;
 import com.example.delivery.orderservice.dataaccess.entity.outbox.OrderPaymentOutboxMessageEntity;
 import com.example.delivery.orderservice.dataaccess.entity.outbox.RestaurantApprovalOutboxMessageEntity;
+import com.example.delivery.orderservice.dataaccess.entity.restaurant.RestaurantEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -154,5 +158,20 @@ public class OrderDataAccessMapper {
                 .build();
     }
 
+    public Restaurant restaurantEntityToRestaurant(List<RestaurantEntity> restaurantEntities) {
+        RestaurantEntity restaurantEntity =
+                restaurantEntities.stream().findFirst().orElseThrow(() ->
+                        new RuntimeException("Restaurant Not Found"));
 
+        List<Product> restaurantProducts = restaurantEntities.stream().map(entity ->
+                new Product(entity.getProductId(), entity.getProductName(),
+                        entity.getProductPrice(), entity.getProductAvailable())
+        ).toList();
+
+        return Restaurant.builder()
+                .restaurantId(restaurantEntity.getRestaurantId())
+                .products(restaurantProducts)
+                .isAvailable(restaurantEntity.getRestaurantActive())
+                .build();
+    }
 }

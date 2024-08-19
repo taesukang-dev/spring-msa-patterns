@@ -33,6 +33,7 @@ services:
       - zookeeper
     ports:
       - "29092:29092"
+      - "8083:8083"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -40,6 +41,18 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - ./debezium-connector-mysql:/tmp/debezium
+      - kafka-data:/usr/share/java
+    networks:
+      - kafka-net
+
+  init:
+    image: busybox
+    volumes:
+      - ./debezium-connector-mysql:/tmp/debezium
+      - kafka-data:/usr/share/java
+    command: /bin/sh -c "cp -r /tmp/debezium/* /usr/share/java/kafka"
     networks:
       - kafka-net
 
@@ -63,26 +76,29 @@ services:
 #      - kafka-net
 
   mysql:
-    image: mysql:latest
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: delivery
     ports:
       - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
     restart: always
+    networks:
+      - kafka-net
 
-  mysql-sink:
-    image: mysql:latest
+  mysql-restaurant:
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: delivery
     ports:
       - "3307:3306"
-    volumes:
-      - mysql-sink:/var/lib/mysql
     restart: always
+    networks:
+      - kafka-net
+
+volumes:
+  kafka-data:
 
 networks:
   kafka-net:

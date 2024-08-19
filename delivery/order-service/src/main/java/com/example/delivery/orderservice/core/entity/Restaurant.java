@@ -1,4 +1,4 @@
-package com.example.delivery.restaurantservice.core.entity;
+package com.example.delivery.orderservice.core.entity;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,9 +6,10 @@ import lombok.Getter;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
 @Builder
+@Getter
 public class Restaurant {
+
     private UUID restaurantId;
     private List<Product> products;
     private boolean isAvailable;
