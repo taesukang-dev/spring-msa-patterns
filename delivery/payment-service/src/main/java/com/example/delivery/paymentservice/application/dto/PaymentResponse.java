@@ -20,6 +20,5 @@ public class PaymentResponse {
     private OutboxStatus outboxStatus;
     private BigDecimal totalPrice;
     private Long userId;
-    private Long version;
     private boolean result;
 }

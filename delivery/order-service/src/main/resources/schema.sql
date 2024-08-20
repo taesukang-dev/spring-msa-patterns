@@ -1,7 +1,8 @@
-drop table if exists restaurant_approval_outbox_message_entity;
-create table restaurant_approval_outbox_message_entity (
+drop table if exists restaurant_approval_outbox_message;
+create table restaurant_approval_outbox_message (
     user_id bigint,
     id binary(16) not null,
+    order_id binary(16),
     restaurant_id binary(16),
     saga_id binary(16),
     tracking_id binary(16),
@@ -10,20 +11,20 @@ create table restaurant_approval_outbox_message_entity (
     primary key (id)
 ) engine=InnoDB;
 
-drop table if exists payment_outbox;
-create table payment_outbox (
+drop table if exists payment_outbox_message;
+create table payment_outbox_message (
     total_price decimal(38,2),
     created_at datetime(6),
     user_id bigint,
-    version bigint,
     id binary(16) not null,
     saga_id binary(16),
+    order_id binary(16),
     outbox_status enum ('COMPLETED','FAILED','STARTED'),
     primary key (id)
 ) engine=InnoDB;
 
-drop table if exists order_item_entity;
-create table order_item_entity (
+drop table if exists order_item;
+create table order_item (
     price decimal(38,2),
     quantity integer,
     sub_total decimal(38,2),
@@ -33,8 +34,8 @@ create table order_item_entity (
     primary key (order_item_id, order_id)
 ) engine=InnoDB;
 
-drop table if exists order_entity;
-create table order_entity (
+drop table if exists `order`;
+create table `order` (
     total_price decimal(38,2),
     user_id bigint,
     order_id binary(16) not null,
@@ -42,13 +43,13 @@ create table order_entity (
     tracking_id binary(16),
     delivery_address varchar(255),
     order_status enum ('APPROVED','CANCELLED','PAID','PENDING'),
+    version bigint,
     primary key (order_id)
 ) engine=InnoDB;
 
-drop table if exists order_approval_outbox_message_entity;
-create table order_approval_outbox_message_entity (
+drop table if exists order_approval_outbox_message;
+create table order_approval_outbox_message (
     user_id bigint,
-    version bigint,
     id binary(16) not null,
     order_id binary(16),
     restaurant_id binary(16),

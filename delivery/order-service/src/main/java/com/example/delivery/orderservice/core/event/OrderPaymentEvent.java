@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.kafka.support.SendResult;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,5 +24,5 @@ public class OrderPaymentEvent {
     private OutboxStatus outboxStatus;
     private BigDecimal totalPrice;
     private Long userId;
-    private Long version;
+    private BiConsumer<SendResult<String, ?>, Throwable> callback;
 }

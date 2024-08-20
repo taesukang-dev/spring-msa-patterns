@@ -1,10 +1,7 @@
 package com.example.delivery.orderservice.dataaccess.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @IdClass(OrderItemEntityId.class)
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "order_item")
 @Entity
 public class OrderItemEntity {
     @Id
@@ -22,6 +20,7 @@ public class OrderItemEntity {
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
+    @Setter
     private OrderEntity order;
     private UUID productId;
     private BigDecimal price;

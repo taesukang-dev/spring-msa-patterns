@@ -22,5 +22,4 @@ public class PaymentRequest {
     private OutboxStatus outboxStatus;
     private BigDecimal totalPrice;
     private Long userId;
-    private Long version;
 }

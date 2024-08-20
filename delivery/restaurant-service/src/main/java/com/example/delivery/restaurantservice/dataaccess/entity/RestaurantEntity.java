@@ -3,6 +3,7 @@ package com.example.delivery.restaurantservice.dataaccess.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(RestaurantEntityId.class)
+@Table(name = "restaurant")
 @Entity
 public class RestaurantEntity {
     @Id

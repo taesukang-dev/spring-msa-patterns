@@ -40,6 +40,7 @@ public class RestaurantMessagingMapper {
                         )
                 )
                 .setResult(event.isResult())
+                .setDeliveryAddress("testing")
                 .build();
     }
 

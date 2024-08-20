@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface RestaurantRepository {
     Optional<Restaurant> findById(UUID restaurantId, List<UUID> productIds);
+
+    Restaurant save(Restaurant restaurant);
 }

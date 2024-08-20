@@ -18,7 +18,6 @@ public class OrderPaymentOutboxMessage {
     private OutboxStatus outboxStatus;
     private BigDecimal totalPrice;
     private Long userId;
-    private Long version;
 
     public OrderPaymentOutboxMessage updateStatus(OutboxStatus outboxStatus) {
         this.outboxStatus = outboxStatus;

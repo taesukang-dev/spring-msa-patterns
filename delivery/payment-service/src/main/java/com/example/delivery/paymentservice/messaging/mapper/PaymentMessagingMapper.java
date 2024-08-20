@@ -26,7 +26,6 @@ public class PaymentMessagingMapper {
                 .outboxStatus(OutboxStatus.valueOf(avroModel.getOutboxStatus()))
                 .totalPrice(avroModel.getTotalPrice())
                 .userId(avroModel.getUserId())
-                .version(avroModel.getVersion())
                 .build();
     }
 
@@ -41,7 +40,6 @@ public class PaymentMessagingMapper {
                 .setOutboxStatus(response.getOutboxStatus().name())
                 .setTotalPrice(response.getTotalPrice())
                 .setUserId(response.getUserId())
-                .setVersion(response.getVersion())
                 .setResult(response.isResult())
                 .build();
     }

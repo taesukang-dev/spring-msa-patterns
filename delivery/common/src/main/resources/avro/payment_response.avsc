@@ -47,10 +47,6 @@
       "type": "long"
     },
     {
-      "name": "version",
-      "type": "long"
-    },
-    {
       "name": "result",
       "type": "boolean"
     }

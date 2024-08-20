@@ -6,7 +6,10 @@ import com.example.delivery.orderservice.core.event.OrderPaymentEvent;
 import com.example.delivery.orderservice.messaging.mapper.OrderMessagingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CompletableFuture;
 
 import static com.example.delivery.infrastructure.kafka.KafkaConst.PAYMENT_TOPIC;
 
@@ -19,9 +22,10 @@ public class OrderPaymentMessageKafkaPublisher implements OrderPaymentMessagePub
 
     @Override
     public void publish(OrderPaymentEvent orderPaymentEvent) {
-        kafkaTemplate.send(
+        CompletableFuture<SendResult<String, OrderPaymentAvroModel>> result = kafkaTemplate.send(
                 PAYMENT_TOPIC,
                 mapper.eventToAvroModel(orderPaymentEvent)
         );
+        result.whenComplete(orderPaymentEvent.getCallback());
     }
 }

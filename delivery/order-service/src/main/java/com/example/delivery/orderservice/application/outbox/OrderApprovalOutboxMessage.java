@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Getter
+// TODO : Not In Use
 public class OrderApprovalOutboxMessage {
     private UUID id;
     private UUID sagaId;
@@ -21,7 +22,6 @@ public class OrderApprovalOutboxMessage {
     private UUID restaurantId;
     private OrderStatus orderStatus;
     private OutboxStatus outboxStatus;
-    private Long version;
 
     public OrderApprovalOutboxMessage updateStatus(OutboxStatus outboxStatus) {
         this.outboxStatus = outboxStatus;

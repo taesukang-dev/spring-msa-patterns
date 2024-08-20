@@ -19,6 +19,4 @@ public class RestaurantApprovalResponseMessageListenerImpl implements Restaurant
     public void orderRejected(RestaurantApprovalResponse restaurantApprovalResponse) {
         sagaHelper.cancelOrder(restaurantApprovalResponse);
     }
-
-    // TODO : Scheduler -> Failed counting??
 }

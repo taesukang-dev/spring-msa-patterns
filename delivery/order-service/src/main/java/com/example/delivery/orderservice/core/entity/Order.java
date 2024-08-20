@@ -20,6 +20,15 @@ public class Order {
     private final List<OrderItem> orderItems;
     private UUID trackingId;
     private OrderStatus orderStatus;
+    private Long version;
+
+    public void setInfos(Restaurant restaurant) {
+        orderItems.forEach(item -> restaurant.getProducts().forEach(product -> {
+            if (product.getProductId().equals(item.getProductId())) {
+                item.updateSubTotal(product.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            }
+        }));
+    }
 
     public void initOrder() {
         AtomicInteger ai = new AtomicInteger(1);
@@ -34,7 +43,7 @@ public class Order {
             throw new RuntimeException("Already Initialized");
         }
 
-        if (totalPrice == null || totalPrice.compareTo(BigDecimal.ZERO) > 0) {
+        if (totalPrice == null || !(totalPrice.compareTo(BigDecimal.ZERO) > 0)) {
             throw new RuntimeException("Not Available to buy");
         }
 

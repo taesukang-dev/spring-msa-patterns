@@ -7,7 +7,6 @@ import com.example.delivery.orderservice.core.entity.Order;
 import com.example.delivery.orderservice.core.entity.OrderItem;
 import com.example.delivery.orderservice.core.entity.Product;
 import com.example.delivery.orderservice.core.entity.Restaurant;
-import com.example.delivery.orderservice.core.event.OrderPaymentEvent;
 import com.example.delivery.orderservice.dataaccess.entity.OrderEntity;
 import com.example.delivery.orderservice.dataaccess.entity.OrderItemEntity;
 import com.example.delivery.orderservice.dataaccess.entity.outbox.OrderApprovalOutboxMessageEntity;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 public class OrderDataAccessMapper {
 
     public OrderEntity orderToOrderEntity(Order order) {
-        return OrderEntity
+        OrderEntity orderEntity = OrderEntity
                 .builder()
                 .orderId(order.getId())
                 .userId(order.getUserId())
@@ -38,7 +37,11 @@ public class OrderDataAccessMapper {
                                 .stream().map(this::orderItemToOrderItemEntity)
                                 .collect(Collectors.toList())
                 )
+                .version(order.getVersion())
                 .build();
+        orderEntity.getItems().forEach(orderItemEntity -> orderItemEntity.setOrder(orderEntity));
+
+        return orderEntity;
     }
 
     public Order orderEntityToOrder(OrderEntity orderEntity) {
@@ -55,6 +58,7 @@ public class OrderDataAccessMapper {
                 )
                 .trackingId(orderEntity.getTrackingId())
                 .orderStatus(orderEntity.getOrderStatus())
+                .version(orderEntity.getVersion())
                 .build();
     }
 
@@ -73,7 +77,6 @@ public class OrderDataAccessMapper {
         return OrderItem
                 .builder()
                 .orderItemId(orderItemEntity.getOrderItemId().intValue())
-                .orderId(orderItemEntity.getOrder().getOrderId())
                 .productId(orderItemEntity.getProductId())
                 .price(orderItemEntity.getPrice())
                 .quantity(orderItemEntity.getQuantity())
@@ -84,7 +87,8 @@ public class OrderDataAccessMapper {
     public RestaurantApprovalOutboxMessageEntity restaurantOutboxMessageToEntity(RestaurantApprovalOutboxMessage outboxMessage) {
         return RestaurantApprovalOutboxMessageEntity
                 .builder()
-                .id(UUID.randomUUID())
+                .id(outboxMessage.getId())
+                .orderId(outboxMessage.getOrderId())
                 .sagaId(outboxMessage.getSagaId())
                 .userId(outboxMessage.getUserId())
                 .restaurantId(outboxMessage.getRestaurantId())
@@ -97,7 +101,8 @@ public class OrderDataAccessMapper {
     public RestaurantApprovalOutboxMessage restaurantOutboxMessageEntityToMessage(RestaurantApprovalOutboxMessageEntity entity) {
         return RestaurantApprovalOutboxMessage
                 .builder()
-                .orderId(UUID.randomUUID())
+                .id(entity.getId())
+                .orderId(entity.getOrderId())
                 .sagaId(entity.getSagaId())
                 .userId(entity.getUserId())
                 .restaurantId(entity.getRestaurantId())
@@ -117,7 +122,6 @@ public class OrderDataAccessMapper {
                 .restaurantId(entity.getRestaurantId())
                 .orderStatus(entity.getOrderStatus())
                 .outboxStatus(entity.getOutboxStatus())
-                .version(entity.getVersion())
                 .build();
     }
 
@@ -130,7 +134,6 @@ public class OrderDataAccessMapper {
                 .restaurantId(message.getRestaurantId())
                 .orderStatus(message.getOrderStatus())
                 .outboxStatus(message.getOutboxStatus())
-                .version(message.getVersion())
                 .build();
     }
 
@@ -138,11 +141,11 @@ public class OrderDataAccessMapper {
         return OrderPaymentOutboxMessageEntity.builder()
                 .id(message.getId())
                 .sagaId(message.getSagaId())
+                .orderId(message.getOrderId())
                 .createdAt(message.getCreatedAt())
                 .outboxStatus(message.getOutboxStatus())
                 .totalPrice(message.getTotalPrice())
                 .userId(message.getUserId())
-                .version(message.getVersion())
                 .build();
     }
 
@@ -150,11 +153,11 @@ public class OrderDataAccessMapper {
         return OrderPaymentOutboxMessage.builder()
                 .id(entity.getId())
                 .sagaId(entity.getSagaId())
+                .orderId(entity.getOrderId())
                 .createdAt(entity.getCreatedAt())
                 .outboxStatus(entity.getOutboxStatus())
                 .totalPrice(entity.getTotalPrice())
                 .userId(entity.getUserId())
-                .version(entity.getVersion())
                 .build();
     }
 

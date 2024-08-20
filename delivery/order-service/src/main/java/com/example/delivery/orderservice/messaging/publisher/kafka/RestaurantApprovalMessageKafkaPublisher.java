@@ -6,7 +6,10 @@ import com.example.delivery.orderservice.core.event.RestaurantApprovalEvent;
 import com.example.delivery.orderservice.messaging.mapper.OrderMessagingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CompletableFuture;
 
 import static com.example.delivery.infrastructure.kafka.KafkaConst.RESTAURANT_APPROVAL_TOPIC;
 
@@ -19,9 +22,10 @@ public class RestaurantApprovalMessageKafkaPublisher implements RestaurantApprov
 
     @Override
     public void publish(RestaurantApprovalEvent restaurantApprovalEvent) {
-        kafkaTemplate.send(
+        CompletableFuture<SendResult<String, RestaurantApprovalRequestAvroModel>> result = kafkaTemplate.send(
                 RESTAURANT_APPROVAL_TOPIC,
                 mapper.eventToRestaurantApprovalRequestAvroModel(restaurantApprovalEvent)
         );
+        result.whenComplete(restaurantApprovalEvent.getCallback());
     }
 }

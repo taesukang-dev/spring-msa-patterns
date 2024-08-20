@@ -1,0 +1,16 @@
+POST http://localhost:8080/order
+Content-Type: application/json
+{
+    "userId": 1,
+    "restaurantId": "550e8400-e29b-41d4-a716-446655440000",
+    "totalPrice": 25.98,
+    "items": [
+        {
+            "productId": "550e8400-e29b-41d4-a716-446655440001",
+            "productName": "Pizza",
+            "quantity": 2,
+            "price": 12.99
+        }
+    ],
+    "deliveryAddress": "123 Main St, Anytown, USA"
+}

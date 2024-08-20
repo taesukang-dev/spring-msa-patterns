@@ -15,7 +15,7 @@ public class OrderItem {
     private final UUID productId;
     private final int quantity;
     private final BigDecimal price;
-    private final BigDecimal subTotal;
+    private BigDecimal subTotal;
 
     void initialOrderItem(UUID orderId, int orderItemId) {
         this.orderItemId = orderItemId;
@@ -25,6 +25,10 @@ public class OrderItem {
     boolean isPriceValid() {
         return (price != null && price.compareTo(BigDecimal.ZERO) > 0) &&
                 setScale(price.multiply(new BigDecimal(quantity))).equals(subTotal);
+    }
+
+    void updateSubTotal(BigDecimal subTotal) {
+        this.subTotal = setScale(subTotal);
     }
 
     private BigDecimal setScale(BigDecimal in) {

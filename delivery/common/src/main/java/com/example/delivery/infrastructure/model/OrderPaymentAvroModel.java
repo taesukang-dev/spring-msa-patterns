@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -513283709007447155L;
+  private static final long serialVersionUID = -6884972906525750500L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderPaymentAvroModel\",\"namespace\":\"com.example.delivery.infrastructure.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"outboxStatus\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"totalPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"version\",\"type\":\"long\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderPaymentAvroModel\",\"namespace\":\"com.example.delivery.infrastructure.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"outboxStatus\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"totalPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"userId\",\"type\":\"long\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -84,7 +84,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
   private java.lang.String outboxStatus;
   private java.math.BigDecimal totalPrice;
   private long userId;
-  private long version;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -102,9 +101,8 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
    * @param outboxStatus The new value for outboxStatus
    * @param totalPrice The new value for totalPrice
    * @param userId The new value for userId
-   * @param version The new value for version
    */
-  public OrderPaymentAvroModel(java.util.UUID id, java.util.UUID orderId, java.util.UUID sagaId, java.lang.Long createdAt, java.lang.String outboxStatus, java.math.BigDecimal totalPrice, java.lang.Long userId, java.lang.Long version) {
+  public OrderPaymentAvroModel(java.util.UUID id, java.util.UUID orderId, java.util.UUID sagaId, java.lang.Long createdAt, java.lang.String outboxStatus, java.math.BigDecimal totalPrice, java.lang.Long userId) {
     this.id = id;
     this.orderId = orderId;
     this.sagaId = sagaId;
@@ -112,7 +110,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
     this.outboxStatus = outboxStatus;
     this.totalPrice = totalPrice;
     this.userId = userId;
-    this.version = version;
   }
 
   @Override
@@ -132,7 +129,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
     case 4: return outboxStatus;
     case 5: return totalPrice;
     case 6: return userId;
-    case 7: return version;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -145,7 +141,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       null,
       null,
       new org.apache.avro.Conversions.DecimalConversion(),
-      null,
       null,
       null
   };
@@ -167,7 +162,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
     case 4: outboxStatus = value$ != null ? value$.toString() : null; break;
     case 5: totalPrice = (java.math.BigDecimal)value$; break;
     case 6: userId = (java.lang.Long)value$; break;
-    case 7: version = (java.lang.Long)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -292,23 +286,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
   }
 
   /**
-   * Gets the value of the 'version' field.
-   * @return The value of the 'version' field.
-   */
-  public long getVersion() {
-    return version;
-  }
-
-
-  /**
-   * Sets the value of the 'version' field.
-   * @param value the value to set.
-   */
-  public void setVersion(long value) {
-    this.version = value;
-  }
-
-  /**
    * Creates a new OrderPaymentAvroModel RecordBuilder.
    * @return A new OrderPaymentAvroModel RecordBuilder
    */
@@ -356,7 +333,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
     private java.lang.String outboxStatus;
     private java.math.BigDecimal totalPrice;
     private long userId;
-    private long version;
 
     /** Creates a new Builder */
     private Builder() {
@@ -397,10 +373,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
         this.userId = data().deepCopy(fields()[6].schema(), other.userId);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.version)) {
-        this.version = data().deepCopy(fields()[7].schema(), other.version);
-        fieldSetFlags()[7] = other.fieldSetFlags()[7];
-      }
     }
 
     /**
@@ -436,10 +408,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       if (isValidValue(fields()[6], other.userId)) {
         this.userId = data().deepCopy(fields()[6].schema(), other.userId);
         fieldSetFlags()[6] = true;
-      }
-      if (isValidValue(fields()[7], other.version)) {
-        this.version = data().deepCopy(fields()[7].schema(), other.version);
-        fieldSetFlags()[7] = true;
       }
     }
 
@@ -721,45 +689,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
       return this;
     }
 
-    /**
-      * Gets the value of the 'version' field.
-      * @return The value.
-      */
-    public long getVersion() {
-      return version;
-    }
-
-
-    /**
-      * Sets the value of the 'version' field.
-      * @param value The value of 'version'.
-      * @return This builder.
-      */
-    public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder setVersion(long value) {
-      validate(fields()[7], value);
-      this.version = value;
-      fieldSetFlags()[7] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'version' field has been set.
-      * @return True if the 'version' field has been set, false otherwise.
-      */
-    public boolean hasVersion() {
-      return fieldSetFlags()[7];
-    }
-
-
-    /**
-      * Clears the value of the 'version' field.
-      * @return This builder.
-      */
-    public com.example.delivery.infrastructure.model.OrderPaymentAvroModel.Builder clearVersion() {
-      fieldSetFlags()[7] = false;
-      return this;
-    }
-
     @Override
     @SuppressWarnings("unchecked")
     public OrderPaymentAvroModel build() {
@@ -772,7 +701,6 @@ public class OrderPaymentAvroModel extends org.apache.avro.specific.SpecificReco
         record.outboxStatus = fieldSetFlags()[4] ? this.outboxStatus : (java.lang.String) defaultValue(fields()[4]);
         record.totalPrice = fieldSetFlags()[5] ? this.totalPrice : (java.math.BigDecimal) defaultValue(fields()[5]);
         record.userId = fieldSetFlags()[6] ? this.userId : (java.lang.Long) defaultValue(fields()[6]);
-        record.version = fieldSetFlags()[7] ? this.version : (java.lang.Long) defaultValue(fields()[7]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;

@@ -13,7 +13,15 @@ public class Restaurant {
     private List<Product> products;
     private boolean isAvailable;
 
-    public boolean isAvailable() {
+    public boolean checkAvailable() {
         return isAvailable && products.stream().filter(e -> !e.isAvailable()).toList().isEmpty();
+    }
+
+    public Restaurant markProductAsUnavailable(UUID productId) {
+        Product product = products.stream()
+                .filter(data -> data.getProductId().equals(productId)).findFirst()
+                .orElseThrow(() -> new RuntimeException("Product Not Found"));
+        product.markAsUnavailable(false);
+        return this;
     }
 }

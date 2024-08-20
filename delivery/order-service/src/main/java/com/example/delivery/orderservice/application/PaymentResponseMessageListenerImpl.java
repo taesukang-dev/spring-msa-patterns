@@ -22,6 +22,4 @@ public class PaymentResponseMessageListenerImpl implements PaymentResponseMessag
     public void paymentRejected(PaymentResponse paymentResponse) {
         sagaHelper.cancelPayment(paymentResponse);
     }
-
-    // TODO : Scheduler -> Failed counting??
 }

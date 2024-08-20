@@ -19,4 +19,8 @@ public class Product {
     public Product(UUID productId) {
         this.productId = productId;
     }
+
+    public void markAsUnavailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
 }

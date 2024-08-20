@@ -16,6 +16,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "`order`")
 @Entity
 public class OrderEntity {
     @Id
@@ -29,6 +30,8 @@ public class OrderEntity {
     private String deliveryAddress;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItemEntity> items;
+    @Version
+    private Long version;
 
     @Override
     public boolean equals(Object o) {

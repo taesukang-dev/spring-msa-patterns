@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 
 import static com.example.delivery.infrastructure.vo.OrderStatus.PAID;
-import static com.example.delivery.infrastructure.vo.OrderStatus.PENDING;
 
 @RequiredArgsConstructor
 @Component
@@ -33,6 +32,8 @@ public class RestaurantApprovalRequestMessageListenerImpl implements RestaurantA
                 restaurantApprovalRequest.getProductIds()
         ).orElseThrow(() -> new RuntimeException("Restaurant Not Found"));
 
+        // 주문 접수, 음식점에 알림... 배달 서비스...
+
         publisher.publishEvent(
                 RestaurantApprovalResponseEvent
                         .builder()
@@ -41,7 +42,7 @@ public class RestaurantApprovalRequestMessageListenerImpl implements RestaurantA
                         .userId(restaurantApprovalRequest.getUserId())
                         .restaurantId(restaurantApprovalRequest.getRestaurantId())
                         .orderStatus(restaurantApprovalRequest.getOrderStatus())
-                        .result(restaurant.isAvailable())
+                        .result(restaurant.checkAvailable())
                         .build()
         );
     }

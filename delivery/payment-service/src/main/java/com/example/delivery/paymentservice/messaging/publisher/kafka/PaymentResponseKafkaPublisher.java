@@ -14,7 +14,7 @@ import static com.example.delivery.infrastructure.kafka.KafkaConst.PAYMENT_RESPO
 @Component
 public class PaymentResponseKafkaPublisher implements PaymentResponseMessagePublisher {
 
-    KafkaTemplate<String, OrderPaymentResponseAvroModel> kafkaTemplate;
+    private final KafkaTemplate<String, OrderPaymentResponseAvroModel> kafkaTemplate;
     private final PaymentMessagingMapper mapper;
 
     @Override

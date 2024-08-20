@@ -1,10 +1,7 @@
 package com.example.delivery.orderservice.dataaccess.entity.outbox;
 
 import com.example.delivery.infrastructure.vo.OrderStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,11 +15,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Getter
+@Table(name = "restaurant_approval_outbox_message")
 @Entity
 public class RestaurantApprovalOutboxMessageEntity {
     @Id
     private UUID id;
     private UUID sagaId;
+    private UUID orderId;
     private Long userId;
     private UUID restaurantId;
     private UUID trackingId;

@@ -24,4 +24,13 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
                 restaurantId, productIds
         ).map(mapper::restaurantEntityToRestaurant);
     }
+
+    @Override
+    public Restaurant save(Restaurant restaurant) {
+        return mapper.restaurantEntityToRestaurant(
+                restaurantJpaRepository.saveAll(
+                        mapper.restaurantToRestaurantEntity(restaurant)
+                )
+        );
+    }
 }

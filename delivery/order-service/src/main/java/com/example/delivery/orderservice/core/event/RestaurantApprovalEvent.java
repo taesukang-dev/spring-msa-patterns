@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.kafka.support.SendResult;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +26,5 @@ public class RestaurantApprovalEvent {
     private List<UUID> productIds;
     private UUID trackingId;
     private OrderStatus orderStatus;
+    private BiConsumer<SendResult<String, ?>, Throwable> callback;
 }

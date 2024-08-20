@@ -24,12 +24,12 @@ public class PaymentMessageListenerImpl implements PaymentMessageListener {
         publisher.send(
                 PaymentResponse.builder()
                         .id(paymentRequest.getId())
+                        .orderId(paymentRequest.getOrderId())
                         .sagaId(paymentRequest.getSagaId())
                         .createdAt(paymentRequest.getCreatedAt())
                         .outboxStatus(paymentRequest.getOutboxStatus())
                         .totalPrice(paymentRequest.getTotalPrice())
                         .userId(paymentRequest.getUserId())
-                        .version(paymentRequest.getVersion())
                         .result(true)
                         .build()
         );

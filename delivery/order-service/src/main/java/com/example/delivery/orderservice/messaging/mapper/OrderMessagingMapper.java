@@ -60,7 +60,6 @@ public class OrderMessagingMapper {
                 .setOutboxStatus(event.getOutboxStatus().name())
                 .setTotalPrice(event.getTotalPrice())
                 .setUserId(event.getUserId())
-                .setVersion(event.getVersion())
                 .build();
     }
 
@@ -78,7 +77,6 @@ public class OrderMessagingMapper {
                 .outboxStatus(OutboxStatus.valueOf(avroModel.getOutboxStatus()))
                 .totalPrice(avroModel.getTotalPrice())
                 .userId(avroModel.getUserId())
-                .version(avroModel.getVersion())
                 .result(avroModel.getResult())
                 .build();
     }

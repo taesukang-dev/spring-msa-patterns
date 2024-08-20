@@ -15,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Getter
+@Table(name = "order_approval_outbox_message")
 @Entity
 public class OrderApprovalOutboxMessageEntity {
     @Id
@@ -27,8 +28,6 @@ public class OrderApprovalOutboxMessageEntity {
     private OrderStatus orderStatus;
     @Enumerated(EnumType.STRING)
     private OutboxStatus outboxStatus;
-    @Version
-    private Long version;
 
     @Override
     public boolean equals(Object o) {

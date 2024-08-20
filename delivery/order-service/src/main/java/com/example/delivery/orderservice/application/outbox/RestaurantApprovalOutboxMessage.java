@@ -14,6 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class RestaurantApprovalOutboxMessage {
+    private UUID id;
     private UUID sagaId;
     private UUID orderId;
     private Long userId;

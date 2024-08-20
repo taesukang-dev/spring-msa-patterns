@@ -12,11 +12,10 @@ public class OrderServiceImpl implements OrderService {
     private final SagaHelper sagaHelper;
 
     @Override
+    // user -> order-service request
     public void order(OrderCommand orderCommand) {
         sagaHelper.startOrder(orderCommand);
     }
-
-    // TODO : Scheduler -> Failed counting??
 
     @Override
     public void cancel() {
