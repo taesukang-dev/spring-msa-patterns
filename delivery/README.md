@@ -140,3 +140,98 @@ Replication 은 관심사를 벗어나는 Database, Table 을 참조하게 되�
 CDC, Change Data Capture 는 Data Store 의 변경을 감지하여 Event 로 발행합니다.
 저희는 이미 Messaging 을 위해 Kafka 를 사용하고 있고 Debezium 이라는 검증된 도구가 있으므로 사용해보도록 하겠습니다.  
 Debezium 은 Data 의 변경을 기준으로 Event Streaming 하여 Subscriber 가 변경분을 적용할 수 있도록 도와줍니다.  
+
+이번 프로젝트에서는 주문 서비스에서 음식점의 데이터가 필요하므로 음식점이 Source Data 가 됩니다.  
+```bash
+# ./docker/init-cdc.sh
+# source
+curl --location --request POST 'http://localhost:8083/connectors' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "name": "delivery-connector",
+  "config": {
+    # ...
+    "database.hostname": "mysql-restaurant",
+    "database.server.name": "mysql-restaurant",
+    "database.allowPublicKeyRetrieval": "true",
+    "database.include.list": "delivery",
+    "database.history.kafka.bootstrap.servers": "kafka:29092",
+    "database.history.kafka.topic": "dbhistory.delivery",
+    # ...
+  }
+}'
+
+# ./docker/init-cdc.sh
+# sink
+curl --location --request POST 'http://localhost:8083/connectors' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "name": "delivery-sink",
+  "config": {
+    # ...
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "connection.url": "jdbc:mysql://mysql:3306/delivery?user=root&password=1234",
+    "delete.enabled": "true",
+    "topics.regex": "mysql-restaurant.delivery.(.*)"
+    # ...
+  }
+}'
+```
+위 명령어들로 Source Database 와 Sink(Consumer) Database 간 연결로 데이터 동기화를 합니다.  
+Source Database 에서는 delivery 하위 Table 변경 Event(Upsert) 를 `mysql-restaurant.delivery.{TABLE_NAME}` topic 에 발행하고  
+Sink Database 는 이를 소비하게 됩니다.  
+
+<img src="./static/db-sink.png" />
+
+왼쪽이 Source 오른쪽이 Sink Database 입니다. Source 에서 Data 를 insert 하자 Sink Database 에서 잠시 후 동기화하는 모습을 확인하실 수 있습니다.   
+
+<img src="./static/kafka-topic-sink.png" />
+
+위와 같이 Topic 으로도 잘 발행된 것을 확인할 수 있습니다.  
+이제 주문 서비스에서는 음식점 서비스의 데이터에 대해 직접적인 통신 요청 없이도 확인할 수 있게 되었습니다.  
+다만 Domain 사용자는 이런 데이터가 어떻게 넘어오는지 알지 못합니다.  
+Record를 조작해도 되는지에 대한 여부를 알지 못해 CUD 작업을 주문 서비스에서 하게 될 수 있습니다.  
+이를 방지하기 위해 주문서비스에서 다루는 음식점 데이터를 View 로 사용합니다.
+
+```java
+// RestaurantEntity.class
+@Table(name = "restaurant_view", schema = "restaurant")
+@Entity
+public class RestaurantEntity {
+    @Id
+    private UUID restaurantId;
+    @Id
+    private UUID productId;
+    private Boolean restaurantActive;
+    private String productName;
+    private BigDecimal productPrice;
+    private Boolean productAvailable;
+}
+```
+
+```sql
+drop table if exists restaurant;
+CREATE TABLE restaurant (
+    restaurant_id BINARY(16) NOT NULL,
+    product_id BINARY(16) NOT NULL,
+    restaurant_active BOOLEAN,
+    product_name VARCHAR(255),
+    product_price DECIMAL(10, 2),
+    product_available BOOLEAN,
+    PRIMARY KEY (restaurant_id, product_id)
+);
+
+drop view if exists restaurant_view;
+CREATE VIEW restaurant_view AS
+SELECT
+    restaurant_id,
+    product_id,
+    restaurant_active,
+    product_name,
+    product_price,
+    product_available
+FROM
+    restaurant;
+```
+
+데이터의 적재는 Restaurant Table 에 하면서도 단순한 Query 덩어리인 View 로 Entity Mapping 하여 데이터에 대한 조작을 할 수 없게 방지합니다.  
