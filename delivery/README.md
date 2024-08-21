@@ -45,13 +45,14 @@ IO 기준으로 주문과 결제만 생각해본다면
 추산할 수 있는 IO Event는 4600만 건입니다.  
 각각을 균등분배하여 IO Event 를 병렬 처리 하며 성능을 올리는 것이 합리적인 판단이라고 들게하는 숫자입니다.  
 Scale Out 을 위한 분배는 주문 요청 및 가능 판단(Order-Service), 결제 요청 (Payment-Service), 주문 승인 및 음식점(Restaurant-Service)으로 3개의 WAS 로 구성하겠습니다.  
-서비스간 통신은 Kafka Messaging 을 통해 느슨한 결합과 병렬 처리를 유도하겠습니다.  
+서비스간 통신은 Kafka Messaging 을 통해 느슨한 결합과 비동기 통신으로의 병렬 처리를 유도하겠습니다.  
 
 1. 주문을 요청한다. (Client)
 2. 음식점에 메뉴를 확인하고 가능한지 판단 후 주문 시작. (Order-Service, 920 만 * 2)
 3. 결제를 요청한다. (Payment-Service, 920만 * 2)
 4. 음식점에서 주문을 승인한다. (Restaurant-Service, 920만 * 2N (주문과 세부 메뉴))
 
+아주 간단한 work flow 이지만 적절한 Bounded Context 라는 판단이 들고 또 일어나야 하는 IO Event 도 잘 분배된 것 같습니다.    
 위와 같이 역할을 나누어 비동기/병렬 처리를 유도해보도록 하겠습니다.  
 
 단 이때 Order-Service 는 자신의 Domain 에 벗어나는 기능이 있습니다.  
@@ -79,7 +80,7 @@ Saga Pattern 을 알아보기 이전에 Spring XA Protocol 이 사용하는 2-Ph
 2PC는 단순한만큼 아래와 같은 단점들이 잇습니다.
 - prepare/commit 은 동기적인 방식으로 진행되기 때문에 Transaction 시간만큼 Locking 되어있고, 이는 성능 저하의 문제로 이어질 수 있습니다.  
 - 모든 책임은 Coordinator 에 있고, 이는 SPOF 의 위험으로 이어질 수 있습니다.
-- NoSQL 은 2PC 를 지원하지 않습니다.
+- NoSQL, Message Broker 은 2PC 를 지원하지 않습니다.
 
 이런 제약들로 2PC 는 사용하기 쉽지 않아보입니다.  
 
@@ -101,11 +102,10 @@ Saga Pattern 은 각 서비스들의 원자성을 위해 CAP 정리에 따라 Co
    1. 중앙 집중 방식으로 조정하는 서비스가 존재하고 각 서비스에게 Local Transaction 을 Trigger 합니다. 
    2. 중앙 집중 방식이므로 Orchestrator 는 활동에 대한 제어가 가능하고 복잡한 일을 한 곳에서 처리할 수 있습니다.
    3. 다만, Orchestrator 는 SPOF 의 위험이 될 수 있습니다.
-   4. 또한 한 곳에서 처리하므로 너무 많은 정보로 비대해지고 이는 느슨한 결합을 추구하는 MSA에서는 적합해 보이지 않습니다.
 
 중앙 제어를 할 만큼 복잡하거나 흐름을 제어할 필요가 없다는 이유로 이번 프로젝트에서는 Choreography 를 구현하기로 하였습니다.
 
-Saga Pattern 은 ACID 중 Isolation 에 대한 문제가 있을 수도 있습니다.  
+Saga Pattern 은 ACID 중 'I'solation 에 대한 문제가 있을 수도 있습니다.  
 여러 Service 간 동시에 Transaction 을 실행하며 이상 현상을 야기할 수도 있습니다.  
 혹은 Kafka 가 SPOF 로 Messaging 이 되지 않을 수도 있습니다.  
 Local Transaction 에서 처리 이후 Event 를 발행하였으나 모종의 문제로 Messaging 이 되지 않을 수 있습니다.  
@@ -114,10 +114,29 @@ Local Transaction 에서 처리 이후 Event 를 발행하였으나 모종의 �
 
 Transactional Outbox Pattern 과 TransactionalEventListener 에 관한 내용은 아래 블로그 글에서 확인하실 수 있습니다.  
 
-## 다양한 메뉴 주문 및 상태 변경, CQRS
-CQRS, Command Query Responsibility Segregation 의 약자로 명령과 조회 책임을 분리하는 패턴입니다.  
-- Command 는 상태를 변경하고 결과값을 반환하지 않는다.
-- Query 는 상태를 변경하지 않고 결과값을 반환한다.
+## 다양한 메뉴 주문 및 상태 변경, CQRS(CDC, Debezium)
+주문 서비스(Order-Service) 는 음식점(Restaurant-Service) 의 데이터가 필요한 경우가 생깁니다.  
+주문 요청 당시 메뉴를 주문할 수 있는지에 대한 판별을 해야될 필요가 있는데요.   
+API 조합 패턴이라고 부르는, 음식점 서비스에서 Rest API 로 필요한 정보를 가져올 수 있습니다. 또는 메뉴에 대한 판별을 음식점 서비스에 위임할 수도 있습니다.  
+다만 이 방법은 다음과 같은 단점으로 사용하기 어렵습니다.
+- 오버헤드의 증가 (API 호출 후 음식점 DB Read 필요)
+- 가용성 저하 우려 (Rest API 를 사용하며 Blocking)
+- 데이터 일관성 결여 (호출 당시와 호출 후의 데이터가 다를 수 있음)
 
-를 기본원칙으로 합니다.
+<img src="./static/cqrs.png" />
 
+CQRS, Command Query Responsibility Segregation 의 약자로 명령과 조회 책임을 분리하는 패턴입니다.   
+한 쪽에서는 CUD / 한 쪽에서는 R 을 수행하면서 부하를 분산하게 합니다.  
+CUD 를 수행하는 Node 에서는 이벤트를 발행하고 R 을 수행하는 Node 에서 구독하여 최신 상태를 유지하게 합니다.  
+또한 Data 를 구독하는 쪽의 제품을 RDB 가 아닌 읽기에 효율적인 제품(NoSQL)을 사용하여도 상관 없습니다.  
+API 조합 패턴으로 쿼리하여 거대한 Data 뭉치를 만드는 것 처럼 각각의 서비스들이 발행하는 Event 를 하나의 Data 뭉치로 만들어 저렴한 비용으로 효과적인 읽기를 수행하게할 수도 있습니다.  
+
+<img src="static/debe.png" />
+
+주문 서비스는 음식점 서비스의 데이터가 필요합니다. 하지만 위에서 살펴보았듯 API 조합 패턴은 효율적이지 않아 보입니다.  
+그렇다고 음식점 서비스에서 발생하는 모든 이벤트를 하나하나 Messaging 하고, 이를 위해 Outbox, 코드 등을 추가하기엔 부담스럽습니다.  
+Replication 은 관심사를 벗어나는 Database, Table 을 참조하게 되고 이 또한 좋은 방법으로 보이진 않습니다.  
+
+CDC, Change Data Capture 는 Data Store 의 변경을 감지하여 Event 로 발행합니다.
+저희는 이미 Messaging 을 위해 Kafka 를 사용하고 있고 Debezium 이라는 검증된 도구가 있으므로 사용해보도록 하겠습니다.  
+Debezium 은 Data 의 변경을 기준으로 Event Streaming 하여 Subscriber 가 변경분을 적용할 수 있도록 도와줍니다.  
