@@ -6,10 +6,12 @@ import com.example.delivery.orderservice.application.dto.RestaurantApprovalRespo
 import com.example.delivery.orderservice.application.ports.input.RestaurantApprovalResponseMessageListener;
 import com.example.delivery.orderservice.messaging.mapper.OrderMessagingMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class RestaurantApprovalResponseKafkaListener {
@@ -19,6 +21,8 @@ public class RestaurantApprovalResponseKafkaListener {
 
     @KafkaListener(topics = KafkaConst.RESTAURANT_APPROVAL_RESPONSE_TOPIC, groupId = "spring")
     public void consumer(@Payload RestaurantApprovalResponseAvroModel responseAvroModel) {
+        log.info("Restaurant Approval Response Message Consumed Saga : {}", responseAvroModel.getSagaId());
+
         boolean approved = responseAvroModel.getResult();
         RestaurantApprovalResponse response
                 = mapper.avroModelToRestaurantApprovalResponse(responseAvroModel);

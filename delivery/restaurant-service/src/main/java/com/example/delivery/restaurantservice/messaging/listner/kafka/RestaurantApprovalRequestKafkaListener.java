@@ -21,6 +21,8 @@ public class RestaurantApprovalRequestKafkaListener {
 
     @KafkaListener(topics = RESTAURANT_APPROVAL_TOPIC, groupId = "spring")
     public void consumer(@Payload RestaurantApprovalRequestAvroModel restaurantApprovalRequestAvroModel) {
+        log.info("Restaurant Approval Request Message Consumed Saga : {}", restaurantApprovalRequestAvroModel.getSagaId());
+
         try {
             restaurantApprovalRequestMessageListener.approveOrder(
                     mapper.avroModelToRestaurantApprovalRequest(
