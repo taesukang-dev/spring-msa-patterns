@@ -39,15 +39,10 @@ public class SagaHelper {
     private final MessageCallbackHelper helper;
 
     @Transactional
-    // user -> order-service request
+    // 1. 주문 생성, 결제 요청 : user -> order-service request
     public void startOrder(OrderCommand orderCommand) {
         Order order = mapper.orderCommandToOrder(orderCommand);
-        Restaurant restaurant = restaurantRepository.findById(
-                orderCommand.restaurantId(),
-                orderCommand.items()
-                        .stream().map(OrderItemCommand::productId)
-                        .toList()
-        ).orElseThrow(() -> new RuntimeException("Restaurant Not Found"));
+        Restaurant restaurant = checkRestaurant(order);
         if (!restaurant.isAvailable()) {
             throw new RuntimeException("Product Not Available");
         }
@@ -87,33 +82,25 @@ public class SagaHelper {
         );
     }
 
-    @Transactional
-    // payment-service -> order-service response
-    public void completePayment(PaymentResponse paymentResponse) {
-        Order order = orderRepository.findById(paymentResponse.getOrderId())
-                .orElseThrow(() -> new RuntimeException("order not found"));
-
-        // restaurant Valid Check
-        boolean isAvailable = checkRestaurant(order);
-        if (isAvailable) {
-            processOrder(order, paymentResponse);
-        } else {
-            rollbackPayment(order, paymentResponse);
-        }
-    }
-
     @Transactional(readOnly = true)
-    public boolean checkRestaurant(Order order) {
-        Restaurant restaurant = restaurantRepository.findById(
+    public Restaurant checkRestaurant(Order order) {
+        return restaurantRepository.findById(
                 order.getRestaurantId(),
                 order.getOrderItems()
                         .stream().map(OrderItem::getProductId).toList()
         ).orElseThrow(() -> new RuntimeException("Restaurant Not Found"));
-        return restaurant.isAvailable();
     }
 
     @Transactional
-    // order-service -> restaurant-service request
+    // 2. 결제 승인 : payment-service -> order-service response
+    public void completePayment(PaymentResponse paymentResponse) {
+        Order order = orderRepository.findById(paymentResponse.getOrderId())
+                .orElseThrow(() -> new RuntimeException("order not found"));
+        processOrder(order, paymentResponse);
+    }
+
+    @Transactional
+    // 3. 결제 승인, 주문 요청 : order-service -> restaurant-service request
     public void processOrder(Order order, PaymentResponse paymentResponse) {
         UUID sagaId = paymentResponse.getSagaId();
 
@@ -139,18 +126,6 @@ public class SagaHelper {
     }
 
     @Transactional
-    // order-service -> payment-service request(compensate)
-    public void rollbackPayment(Order order, PaymentResponse paymentResponse) {
-        order.cancel();
-        orderRepository.save(order);
-
-        // Compensating Transaction
-        publisher.publishEvent(
-                mapper.responseToPaymentCompensateEvent(paymentResponse)
-        );
-    }
-
-    @Transactional
     // payment-service -> order-service response
     public void cancelPayment(PaymentResponse paymentResponse) {
         Order order = orderRepository.findById(paymentResponse.getOrderId())
@@ -161,7 +136,7 @@ public class SagaHelper {
     }
 
     @Transactional
-    // restaurant-service -> order-service response
+    // 4. 주문 응답 : restaurant-service -> order-service response
     public void completeOrder(RestaurantApprovalResponse restaurantApprovalResponse) {
         Order order = orderRepository.findById(restaurantApprovalResponse.getOrderId())
                 .orElseThrow(() -> new RuntimeException("Order Not Found"));

@@ -20,7 +20,7 @@ public class MessageCallbackHelper {
             if (ex == null) {
                 save.accept(message.updateStatus(OutboxStatus.COMPLETED));
             } else {
-                save.accept(message.updateStatus(OutboxStatus.COMPLETED));
+                save.accept(message.updateStatus(OutboxStatus.FAILED));
             }
         };
     }
@@ -33,7 +33,7 @@ public class MessageCallbackHelper {
             if (ex == null) {
                 save.accept(message.updateStatus(OutboxStatus.COMPLETED));
             } else {
-                save.accept(message.updateStatus(OutboxStatus.COMPLETED));
+                save.accept(message.updateStatus(OutboxStatus.FAILED));
             }
         };
     }
